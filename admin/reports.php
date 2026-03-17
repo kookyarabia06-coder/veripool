@@ -2,6 +2,7 @@
 /**
  * Veripool Reservation System - Admin Reports Page
  * Generate and view various reports
+ * Coastal Harmony Theme - Gray, Blue, Green
  */
 
 // Enable error reporting
@@ -266,38 +267,282 @@ if (isset($_GET['export']) && $_GET['export'] == 'csv') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reports - Admin Dashboard</title>
+    <title>Reports - Veripool Admin</title>
     <!-- POP UP ICON -->
     <link rel="apple-touch-icon" sizes="180x180" href="/veripool/assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/veripool/assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/veripool/assets/favicon/favicon-16x16.png">
     <link rel="manifest" href="/veripool/assets/favicon/site.webmanifest">
     
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/admin.css">
-    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    
     <style>
-        .report-header {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        /* ===== COASTAL HARMONY THEME - REPORTS PAGE ===== */
+        :root {
+            --gray-100: #F7FAFC;
+            --gray-200: #EDF2F7;
+            --gray-300: #E2E8F0;
+            --gray-400: #CBD5E0;
+            --gray-500: #A0AEC0;
+            --gray-600: #718096;
+            --gray-700: #4A5568;
+            --gray-800: #2D3748;
+            --gray-900: #1A202C;
+            
+            --blue-500: #2B6F8B;
+            --blue-600: #1E5770;
+            --blue-700: #143F52;
+            
+            --green-500: #2F855A;
+            --green-600: #276749;
+            --green-700: #1E4B38;
+            
+            --white: #FFFFFF;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.08);
+            
+            /* Consistent Button Colors */
+            --btn-export: #2F855A;
+            --btn-export-hover: #276749;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            overflow-x: hidden;
+        }
+        
+        /* Main Content Layout */
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--gray-100) 0%, var(--white) 100%);
+            position: relative;
+        }
+        
+        /* Decorative background elements */
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(43, 111, 139, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .main-content::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(47, 133, 90, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 30px;
+            padding: 20px 25px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .top-bar h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .top-bar h1 i {
+            color: var(--blue-500);
+            background: var(--gray-100);
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .date-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            background: var(--gray-100);
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .date-info i {
+            color: var(--blue-500);
+            margin-right: 5px;
+        }
+        
+        /* Alert Messages */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid;
+            position: relative;
+            z-index: 2;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .alert i {
+            font-size: 1.2rem;
+        }
+        
+        .alert-success {
+            border-left-color: var(--green-500);
+            color: var(--green-700);
+        }
+        
+        .alert-error {
+            border-left-color: #C53030;
+            color: #C53030;
+            background: #FFF5F5;
+            border-color: #FED7D7;
+        }
+        
+        /* Report Header */
+        .report-header {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
         }
         
         .report-title {
+            font-family: 'Montserrat', sans-serif;
             font-size: 1.8rem;
-            color: #102C57;
-            margin-bottom: 10px;
+            color: var(--gray-900);
+            margin-bottom: 5px;
         }
         
-        .report-filters {
-            background: white;
+        .report-period {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .report-period i {
+            color: var(--blue-500);
+        }
+        
+        /* Report Type Buttons */
+        .report-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .report-type-btn {
+            background: var(--white);
+            padding: 20px 15px;
+            border-radius: 16px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 600;
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .report-type-btn:hover {
+            border-color: var(--blue-500);
+            color: var(--blue-500);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .report-type-btn.active {
+            background: var(--blue-500);
+            color: white;
+            border-color: var(--blue-500);
+            box-shadow: 0 4px 10px rgba(43, 111, 139, 0.2);
+        }
+        
+        .report-type-btn i {
+            font-size: 2rem;
+            color: var(--blue-500);
+        }
+        
+        .report-type-btn.active i {
+            color: white;
+        }
+        
+        .report-type-btn span {
+            font-size: 0.9rem;
+        }
+        
+        /* Filter Section */
+        .filter-section {
+            background: var(--white);
+            border-radius: 16px;
             padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .filter-section form {
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
@@ -311,136 +556,251 @@ if (isset($_GET['export']) && $_GET['export'] == 'csv') {
         
         .filter-group label {
             display: block;
-            margin-bottom: 5px;
-            color: #102C57;
-            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .filter-input {
             width: 100%;
-            padding: 8px;
-            border: 2px solid #e0e0e0;
-            border-radius: 5px;
-        }
-        
-        .report-types {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-        
-        .report-type-btn {
-            background: white;
-            padding: 15px;
+            padding: 8px 12px;
+            border: 2px solid var(--gray-200);
             border-radius: 8px;
-            text-align: center;
-            text-decoration: none;
-            color: #102C57;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(43, 111, 139, 0.1);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            font-size: 0.85rem;
             font-weight: 500;
-            border: 2px solid transparent;
-            transition: all 0.3s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: 'Inter', sans-serif;
         }
         
-        .report-type-btn:hover {
-            border-color: #1679AB;
+        .btn-primary {
+            background: var(--blue-500);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--blue-600);
             transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
         
-        .report-type-btn.active {
-            background: #1679AB;
+        .btn-export {
+            background: var(--btn-export);
             color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
         }
         
-        .report-type-btn i {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-            display: block;
-            color: #1679AB;
+        .btn-export:hover {
+            background: var(--btn-export-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
         
-        .report-type-btn.active i {
-            color: white;
-        }
-        
+        /* Summary Cards */
         .summary-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
         }
         
         .summary-card {
-            background: white;
+            background: var(--white);
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border-left: 4px solid #1679AB;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            border-top: 4px solid var(--blue-500);
+            transition: all 0.3s ease;
+        }
+        
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
         }
         
         .summary-card .label {
-            color: #666;
-            font-size: 0.9rem;
+            color: var(--gray-600);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             margin-bottom: 5px;
         }
         
         .summary-card .value {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #102C57;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.2;
         }
         
         .summary-card .sub-value {
-            color: #1679AB;
+            color: var(--blue-500);
             font-size: 0.9rem;
+            margin-top: 5px;
         }
         
-        .export-btn {
-            background: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            display: inline-flex;
+        /* Card */
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            margin-bottom: 30px;
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .card-header {
+            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--white), var(--gray-100));
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 5px;
         }
         
-        .export-btn:hover {
-            background: #218838;
+        .card-header h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--gray-900);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .chart-container {
-            background: white;
+        .card-header h3 i {
+            color: var(--blue-500);
+        }
+        
+        .card-header .badge {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .card-body {
             padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            height: 300px;
         }
         
-        @media (max-width: 768px) {
-            .report-filters {
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        
+        table th {
+            text-align: left;
+            padding: 12px 8px;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--gray-200);
+            white-space: nowrap;
+        }
+        
+        table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid var(--gray-200);
+            vertical-align: middle;
+            color: var(--gray-700);
+        }
+        
+        table tr:hover td {
+            background: var(--gray-100);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray-500);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--gray-300);
+            margin-bottom: 15px;
+        }
+        
+        .empty-state p {
+            color: var(--gray-600);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .summary-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .filter-section form {
                 flex-direction: column;
             }
             
             .filter-group {
                 width: 100%;
             }
+            
+            .report-types {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .report-types {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Include Sidebar -->
     <?php include BASE_PATH . '/includes/sidebar.php'; ?>
-    
-    <!-- Mobile Menu Toggle -->
-    <button class="menu-toggle" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i> Menu
-    </button>
-    
-   
     
     <!-- Main Content -->
     <div class="main-content">
@@ -450,17 +810,74 @@ if (isset($_GET['export']) && $_GET['export'] == 'csv') {
                 <i class="fas fa-chart-bar"></i>
                 Reports
             </h1>
-            <div class="date">
-                <i class="far fa-calendar-alt"></i> <?php echo date('l, F d, Y'); ?>
+            <div class="date-info">
+                <span><i class="far fa-calendar-alt"></i> <?php echo date('l, F d, Y'); ?></span>
             </div>
         </div>
         
-      
-       
+        <!-- Report Type Buttons -->
+        <div class="report-types">
+            <a href="?type=revenue&date_from=<?php echo $date_from; ?>&date_to=<?php echo $date_to; ?>" 
+               class="report-type-btn <?php echo $report_type == 'revenue' ? 'active' : ''; ?>">
+                <i class="fas fa-chart-line"></i>
+                <span>Revenue</span>
+            </a>
+            <a href="?type=occupancy&date_from=<?php echo $date_from; ?>&date_to=<?php echo $date_to; ?>" 
+               class="report-type-btn <?php echo $report_type == 'occupancy' ? 'active' : ''; ?>">
+                <i class="fas fa-bed"></i>
+                <span>Occupancy</span>
+            </a>
+            <a href="?type=guests&date_from=<?php echo $date_from; ?>&date_to=<?php echo $date_to; ?>" 
+               class="report-type-btn <?php echo $report_type == 'guests' ? 'active' : ''; ?>">
+                <i class="fas fa-users"></i>
+                <span>Guests</span>
+            </a>
+            <a href="?type=payments&date_from=<?php echo $date_from; ?>&date_to=<?php echo $date_to; ?>" 
+               class="report-type-btn <?php echo $report_type == 'payments' ? 'active' : ''; ?>">
+                <i class="fas fa-credit-card"></i>
+                <span>Payments</span>
+            </a>
+            <a href="?type=cottages&date_from=<?php echo $date_from; ?>&date_to=<?php echo $date_to; ?>" 
+               class="report-type-btn <?php echo $report_type == 'cottages' ? 'active' : ''; ?>">
+                <i class="fas fa-home"></i>
+                <span>Cottages</span>
+            </a>
+        </div>
+        
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <form method="GET">
+                <input type="hidden" name="type" value="<?php echo $report_type; ?>">
+                
+                <div class="filter-group">
+                    <label><i class="fas fa-calendar-alt"></i> Date From</label>
+                    <input type="date" name="date_from" class="filter-input" value="<?php echo $date_from; ?>">
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-calendar-alt"></i> Date To</label>
+                    <input type="date" name="date_to" class="filter-input" value="<?php echo $date_to; ?>">
+                </div>
+                <div class="filter-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sync-alt"></i> Generate
+                    </button>
+                </div>
+                <div class="filter-group" style="text-align: right;">
+                    <a href="?type=<?php echo $report_type; ?>&date_from=<?php echo $date_from; ?>&date_to=<?php echo $date_to; ?>&export=csv" 
+                       class="btn-export">
+                        <i class="fas fa-download"></i> Export CSV
+                    </a>
+                </div>
+            </form>
+        </div>
+        
         <!-- Report Header -->
         <div class="report-header">
             <h2 class="report-title"><?php echo $report_title; ?></h2>
-            <p>Period: <?php echo date('M d, Y', strtotime($date_from)); ?> - <?php echo date('M d, Y', strtotime($date_to)); ?></p>
+            <div class="report-period">
+                <i class="far fa-calendar-alt"></i>
+                <?php echo date('M d, Y', strtotime($date_from)); ?> - <?php echo date('M d, Y', strtotime($date_to)); ?>
+            </div>
         </div>
         
         <!-- Summary Cards -->
@@ -542,32 +959,6 @@ if (isset($_GET['export']) && $_GET['export'] == 'csv') {
             </div>
         </div>
         <?php endif; ?>
-
-         <!-- Filter Section -->
-        <div class="report-filters">
-            <form method="GET" style="display: flex; gap: 15px; flex-wrap: wrap; width: 100%; align-items: flex-end;">
-                <input type="hidden" name="type" value="<?php echo $report_type; ?>">
-                
-                <div class="filter-group">
-                    <label>Date From</label>
-                    <input type="date" name="date_from" class="filter-input" value="<?php echo $date_from; ?>">
-                </div>
-                <div class="filter-group">
-                    <label>Date To</label>
-                    <input type="date" name="date_to" class="filter-input" value="<?php echo $date_to; ?>">
-                </div>
-                <div class="filter-group">
-                    <button type="submit" class="btn btn-primary">Generate Report</button>
-                </div>
-                <div class="filter-group" style="text-align: right;">
-                    <a href="?type=<?php echo $report_type; ?>&date_from=<?php echo $date_from; ?>&date_to=<?php echo $date_to; ?>&export=csv" 
-                       class="export-btn">
-                        <i class="fas fa-download"></i> Export CSV
-                    </a>
-                </div>
-            </form>
-        </div>
-        
         
         <!-- Report Table -->
         <div class="card">
@@ -577,7 +968,10 @@ if (isset($_GET['export']) && $_GET['export'] == 'csv') {
             </div>
             <div class="card-body">
                 <?php if (empty($report_data)): ?>
-                    <p style="text-align: center; color: #666; padding: 40px;">No data available for the selected period.</p>
+                    <div class="empty-state">
+                        <i class="fas fa-chart-bar"></i>
+                        <p>No data available for the selected period.</p>
+                    </div>
                 <?php else: ?>
                     <div class="table-responsive">
                         <table>
@@ -647,7 +1041,7 @@ if (isset($_GET['export']) && $_GET['export'] == 'csv') {
                                     <?php elseif ($report_type == 'guests'): ?>
                                         <td><strong><?php echo htmlspecialchars($row['full_name']); ?></strong></td>
                                         <td><?php echo htmlspecialchars($row['email']); ?></td>
-                                        <td><?php echo $row['phone'] ?: 'N/A'; ?></td>
+                                        <td><?php echo $row['phone'] ?: '—'; ?></td>
                                         <td><?php echo $row['total_reservations']; ?></td>
                                         <td>₱<?php echo number_format($row['total_spent'], 2); ?></td>
                                         <td><?php echo $row['last_visit'] ? date('M d, Y', strtotime($row['last_visit'])) : 'Never'; ?></td>

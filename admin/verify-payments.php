@@ -2,7 +2,7 @@
 /**
  * Veripool Reservation System - Admin Verify Payments Page
  * View and verify pending payment screenshots with OTP confirmation
- * Matches the style of reservations.php
+ * Coastal Harmony Theme - Gray, Blue, Green
  */
 
 // Enable error reporting
@@ -22,7 +22,7 @@ define('BASE_URL', 'http://localhost/veripool');
 require_once BASE_PATH . '/includes/config.php';
 require_once BASE_PATH . '/includes/Database.php';
 require_once BASE_PATH . '/includes/functions.php';
-require_once BASE_PATH . '/includes/EntryPassManager.php'; // ADD THIS LINE
+require_once BASE_PATH . '/includes/EntryPassManager.php';
 
 // Check if user is logged in and is admin
 if (!isset($_SESSION['user_id']) || !in_array($_SESSION['user_role'] ?? '', ['admin', 'super_admin'])) {
@@ -109,8 +109,6 @@ $reservation_with_pending = $db->getRow("
     LIMIT 1
 ");
 
-// REMOVED: sendOTPEmail function - now using EntryPassManager
-
 // Handle actions
 $message = '';
 $message_type = '';
@@ -172,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             ['id' => $reservation_id]
                         );
                         
-                        // FIXED: Use EntryPassManager to send OTP email if reservation is fully paid
+                        // Use EntryPassManager to send OTP email if reservation is fully paid
                         if ($remaining_balance <= 0 && !empty($otp_code)) {
                             // Get reservation details for email
                             $reservation_details = $db->getRow("
@@ -266,8 +264,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 /**
- * FIXED: Extract screenshot filename from payment record
- * Now only checks the screenshot column in the database
+ * Extract screenshot filename from payment record
+ * Only checks the screenshot column in the database
  */
 function extractScreenshotFilename($payment) {
     // Only check the screenshot column
@@ -287,180 +285,298 @@ function extractScreenshotFilename($payment) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify Payments - Admin Dashboard</title>
+    <title>Verify Payments - Veripool Admin</title>
     <!-- POP UP ICON -->
     <link rel="apple-touch-icon" sizes="180x180" href="/veripool/assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/veripool/assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/veripool/assets/favicon/favicon-16x16.png">
     <link rel="manifest" href="/veripool/assets/favicon/site.webmanifest">
     
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/admin.css">
-    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    
     <style>
-        /* Stats Grid - Matching reservations.php */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+        /* ===== COASTAL HARMONY THEME - VERIFY PAYMENTS PAGE ===== */
+        :root {
+            --gray-100: #F7FAFC;
+            --gray-200: #EDF2F7;
+            --gray-300: #E2E8F0;
+            --gray-400: #CBD5E0;
+            --gray-500: #A0AEC0;
+            --gray-600: #718096;
+            --gray-700: #4A5568;
+            --gray-800: #2D3748;
+            --gray-900: #1A202C;
+            
+            --blue-500: #2B6F8B;
+            --blue-600: #1E5770;
+            --blue-700: #143F52;
+            
+            --green-500: #2F855A;
+            --green-600: #276749;
+            --green-700: #1E4B38;
+            
+            --white: #FFFFFF;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            overflow-x: hidden;
+        }
+        
+        /* Main Content Layout */
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--gray-100) 0%, var(--white) 100%);
+            position: relative;
+        }
+        
+        /* Decorative background elements */
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(43, 111, 139, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .main-content::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(47, 133, 90, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px 25px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .top-bar h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .top-bar h1 i {
+            color: var(--blue-500);
+            background: var(--gray-100);
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .date-info {
+            display: flex;
+            align-items: center;
             gap: 15px;
-            margin-bottom: 20px;
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            background: var(--gray-100);
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid var(--gray-200);
         }
         
-        .stat-card {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            border-left: 3px solid #1679AB;
+        .date-info i {
+            color: var(--blue-500);
+            margin-right: 5px;
         }
         
-        .stat-card .number {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #102C57;
+        /* Alert Messages */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid;
+            position: relative;
+            z-index: 2;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
         }
         
-        .stat-card .label {
-            font-size: 0.75rem;
-            color: #666;
+        .alert i {
+            font-size: 1.2rem;
         }
         
-        .stat-card .detail {
-            font-size: 0.7rem;
-            color: #1679AB;
-            margin-top: 3px;
+        .alert-success {
+            border-left-color: var(--green-500);
+            color: var(--green-700);
         }
         
-        /* Tab Navigation - Matching reservations.php */
+        .alert-error {
+            border-left-color: #C53030;
+            color: #C53030;
+            background: #FFF5F5;
+            border-color: #FED7D7;
+        }
+        
+        /* Tab Navigation */
         .tab-nav {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #FFCBCB;
-            padding-bottom: 10px;
+            margin-bottom: 25px;
+            padding-bottom: 5px;
+            flex-wrap: wrap;
+            align-items: center;
+            position: relative;
+            z-index: 2;
         }
         
         .tab-btn {
-            padding: 8px 20px;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 20px;
+            padding: 12px 25px;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 40px;
             cursor: pointer;
             font-size: 0.9rem;
-            font-weight: 500;
-            color: #102C57;
+            font-weight: 600;
+            color: var(--gray-700);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
         }
         
         .tab-btn:hover {
-            background: #FFCBCB;
+            background: var(--gray-100);
+            border-color: var(--blue-500);
+            color: var(--blue-500);
+            transform: translateY(-2px);
         }
         
         .tab-btn.active {
-            background: #1679AB;
+            background: var(--blue-500);
             color: white;
-            border-color: #1679AB;
+            border-color: var(--blue-500);
+            box-shadow: 0 4px 10px rgba(43, 111, 139, 0.2);
         }
         
-        .tab-btn i {
-            font-size: 0.9rem;
+        .tab-btn .badge {
+            background: var(--gray-200);
+            color: var(--gray-700);
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
         }
         
-        /* Mini Stats - Matching reservations.php */
-        .payment-stats-mini {
+        .tab-btn.active .badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
             display: flex;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             flex-wrap: wrap;
+            background: var(--white);
+            padding: 15px 20px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            z-index: 2;
         }
         
-        .stat-mini {
-            background: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            border: 1px solid #e0e0e0;
-            font-size: 0.85rem;
-            color: #102C57;
-        }
-        
-        .stat-mini strong {
-            color: #1679AB;
-            margin-right: 3px;
-        }
-        
-        .stat-mini.warning {
-            background: #fff3cd;
-            border-color: #ffc107;
-        }
-        
-        .stat-mini.warning strong {
-            color: #856404;
-        }
-        
-        /* Quick Actions - Matching reservations.php */
-        .quick-actions {
+        .stat-item {
             display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .quick-action {
-            background: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            text-align: center;
-            text-decoration: none;
-            color: #102C57;
-            border: 1px solid #e0e0e0;
-            font-size: 0.8rem;
-            display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--gray-700);
         }
         
-        .quick-action:hover {
-            border-color: #1679AB;
-            background: #f0f8ff;
+        .stat-item i {
+            color: var(--blue-500);
+            font-size: 1rem;
         }
         
-        .quick-action i {
-            color: #1679AB;
+        .stat-item.warning i {
+            color: #ED8936;
         }
         
-        .quick-action.primary {
-            background: #1679AB;
-            border-color: #1679AB;
-            color: white;
+        .stat-item.success i {
+            color: var(--green-500);
         }
         
-        .quick-action.primary i {
-            color: white;
+        .stat-item.danger i {
+            color: #C53030;
         }
         
-        .quick-action.warning {
-            background: #ffc107;
-            border-color: #ffc107;
-            color: #102C57;
+        .stat-item strong {
+            color: var(--gray-900);
+            margin-right: 3px;
+            font-weight: 600;
         }
         
-        .quick-action.warning i {
-            color: #102C57;
-        }
-        
-        /* Filter Section - Matching reservations.php */
+        /* Filter Section */
         .filter-section {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            background: var(--white);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .filter-section form {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             flex-wrap: wrap;
             align-items: flex-end;
         }
@@ -472,59 +588,114 @@ function extractScreenshotFilename($payment) {
         
         .filter-group label {
             display: block;
-            margin-bottom: 4px;
-            color: #102C57;
-            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--gray-700);
+            font-weight: 600;
             font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .filter-input {
             width: 100%;
-            padding: 6px 8px;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            padding: 8px 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
         }
         
-        /* Cards - Matching reservations.php */
-        .card {
-            background: white;
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(43, 111, 139, 0.1);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .btn-primary {
+            background: var(--blue-500);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--blue-600);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--gray-700);
+            border: 2px solid var(--gray-300);
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--blue-500);
+            color: var(--blue-500);
+        }
+        
+        /* Card */
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            margin-bottom: 30px;
             overflow: hidden;
+            position: relative;
+            z-index: 2;
         }
         
         .card-header {
-            padding: 10px 15px;
-            background: #102C57;
-            color: white;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--white), var(--gray-100));
+            border-bottom: 1px solid var(--gray-200);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .card-header h3 {
-            color: #FFCBCB;
-            font-size: 0.95rem;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--gray-900);
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+        }
+        
+        .card-header h3 i {
+            color: var(--blue-500);
         }
         
         .card-header .badge {
-            background: #FFB1B1;
-            color: #102C57;
-            padding: 3px 8px;
-            border-radius: 20px;
-            font-size: 0.65rem;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid var(--gray-200);
         }
         
         .card-body {
-            padding: 15px;
+            padding: 20px;
         }
         
-        /* Tables - Matching reservations.php */
+        /* Tables */
         .table-responsive {
             overflow-x: auto;
         }
@@ -532,163 +703,205 @@ function extractScreenshotFilename($payment) {
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
         }
         
-        th {
+        table th {
             text-align: left;
-            padding: 8px 5px;
-            background: #f8f9fa;
-            color: #102C57;
+            padding: 12px 8px;
+            background: var(--gray-100);
+            color: var(--gray-700);
             font-weight: 600;
-            border-bottom: 2px solid #FFCBCB;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--gray-200);
             white-space: nowrap;
         }
         
-        td {
-            padding: 8px 5px;
-            border-bottom: 1px solid #e9ecef;
+        table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid var(--gray-200);
             vertical-align: middle;
+            color: var(--gray-700);
         }
         
-        tr:hover td {
-            background: #f8f9fa;
+        table tr:hover td {
+            background: var(--gray-100);
         }
         
-        /* Status Badges - Matching reservations.php */
+        /* Status Badges */
         .status-badge {
             display: inline-block;
-            padding: 3px 6px;
-            border-radius: 10px;
+            padding: 4px 10px;
+            border-radius: 30px;
             font-size: 0.65rem;
-            font-weight: 500;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
-        .status-pending { background: #fff3cd; color: #856404; }
-        .status-completed { background: #d4edda; color: #155724; }
-        .status-failed { background: #f8d7da; color: #721c24; }
-        .status-cancelled { background: #e2e3e5; color: #383d41; }
-        .status-partial { background: #cce5ff; color: #004085; }
+        .status-pending { 
+            background: #FEF3C7; 
+            color: #92400E; 
+        }
+        .status-completed { 
+            background: #DEF7EC; 
+            color: var(--green-700); 
+        }
+        .status-failed { 
+            background: #FEE2E2; 
+            color: #B91C1C; 
+        }
+        .status-partial { 
+            background: #E1EFFE; 
+            color: var(--blue-700); 
+        }
         
-        /* Payment Badges - Matching reservations.php */
+        /* Payment Badges */
         .payment-badge {
             display: inline-block;
-            padding: 2px 5px;
-            border-radius: 8px;
-            font-size: 0.6rem;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.65rem;
             font-weight: 600;
         }
         
         .payment-badge.completed {
-            background: #d4edda;
-            color: #155724;
+            background: #DEF7EC;
+            color: var(--green-700);
         }
         
         .payment-badge.pending {
-            background: #fff3cd;
-            color: #856404;
+            background: #FEF3C7;
+            color: #92400E;
         }
         
         .payment-badge.failed {
-            background: #f8d7da;
-            color: #721c24;
+            background: #FEE2E2;
+            color: #B91C1C;
         }
         
-        .payment-badge.cancelled {
-            background: #e2e3e5;
-            color: #383d41;
+        /* Method Badge */
+        .method-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 600;
         }
         
-        .payment-badge.partial {
-            background: #cce5ff;
-            color: #004085;
+        .method-gcash {
+            background: #E1EFFE;
+            color: var(--blue-700);
+        }
+        
+        .method-cash {
+            background: #DEF7EC;
+            color: var(--green-700);
         }
         
         /* OTP Badge */
         .otp-badge {
-            background: #102C57;
-            color: #FFCBCB;
-            padding: 3px 6px;
-            border-radius: 12px;
-            font-size: 0.65rem;
-            font-weight: bold;
+            background: var(--gray-900);
+            color: var(--gray-100);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
             letter-spacing: 1px;
-            display: inline-block;
         }
         
-        /* Screenshot Thumbnail - Matching reservations.php */
+        /* Balance Display */
+        .balance-positive {
+            color: #C53030;
+            font-weight: 600;
+        }
+        
+        .balance-zero {
+            color: var(--green-600);
+            font-weight: 600;
+        }
+        
+        /* Screenshot Thumbnail */
         .screenshot-thumb {
-            width: 30px;
-            height: 30px;
-            background: #f0f0f0;
-            border-radius: 4px;
+            width: 32px;
+            height: 32px;
+            background: var(--gray-100);
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            border: 1px solid #ddd;
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s ease;
+        }
+        
+        .screenshot-thumb:hover {
+            background: var(--gray-200);
+            transform: scale(1.1);
         }
         
         .screenshot-thumb i {
             font-size: 1rem;
-            color: #1679AB;
+            color: var(--blue-500);
         }
         
-        .screenshot-thumb:hover {
-            background: #e0e0e0;
-        }
-        
-        /* Action Buttons - Matching reservations.php */
+        /* Action Buttons */
         .action-buttons {
             display: flex;
-            gap: 3px;
+            gap: 5px;
             flex-wrap: wrap;
         }
         
         .btn-icon {
-            padding: 4px 6px;
+            padding: 6px 10px;
             border: none;
-            border-radius: 3px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.65rem;
-            transition: all 0.2s;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 500;
         }
         
         .btn-icon:hover {
-            transform: translateY(-1px);
-            filter: brightness(0.95);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
         
-        .btn-view { background: #17a2b8; color: white; }
-        .btn-approve { background: #28a745; color: white; }
-        .btn-reject { background: #ffc107; color: #102C57; }
-        .btn-otp { background: #102C57; color: #FFCBCB; }
-        
-        /* Balance Display */
-        .balance-positive {
-            color: #dc3545;
-            font-weight: bold;
+        .btn-view { 
+            background: var(--blue-500); 
+            color: white; 
         }
         
-        .balance-zero {
-            color: #28a745;
-            font-weight: bold;
+        .btn-view:hover {
+            background: var(--blue-600);
         }
         
-        /* OTP Display */
-        .otp-display {
-            background: #102C57;
-            color: #FFCBCB;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            letter-spacing: 3px;
+        /* Empty State */
+        .empty-state {
             text-align: center;
-            margin: 10px 0;
+            padding: 40px 20px;
+            color: var(--gray-500);
         }
         
-        /* Modal - Matching reservations.php */
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--gray-300);
+            margin-bottom: 15px;
+        }
+        
+        .empty-state p {
+            color: var(--gray-600);
+        }
+        
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -696,10 +909,11 @@ function extractScreenshotFilename($payment) {
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(3px);
         }
         
         .modal.active {
@@ -707,114 +921,217 @@ function extractScreenshotFilename($payment) {
         }
         
         .modal-content {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 20px;
             max-width: 700px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
         }
         
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #FFCBCB;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gray-200);
         }
         
         .modal-header h3 {
-            color: #102C57;
-            font-size: 1.1rem;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--gray-900);
+            font-size: 1.2rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modal-header h3 i {
+            color: var(--blue-500);
         }
         
         .modal-close {
             background: none;
             border: none;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             cursor: pointer;
-            color: #666;
+            color: var(--gray-500);
+            transition: color 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            color: #C53030;
         }
         
         .screenshot-image {
             width: 100%;
             max-height: 400px;
             object-fit: contain;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 12px;
+            border: 1px solid var(--gray-200);
             margin-bottom: 15px;
         }
         
         .payment-details {
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 5px;
+            background: var(--gray-100);
+            padding: 15px;
+            border-radius: 12px;
             margin-bottom: 15px;
-            font-size: 0.85rem;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .payment-details p {
+            margin: 5px 0;
+            color: var(--gray-700);
         }
         
         .balance-info {
-            background: #e8f4fd;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-            border-left: 4px solid #1679AB;
+            background: #E1EFFE;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-left: 4px solid var(--blue-500);
+        }
+        
+        .balance-info strong {
+            color: var(--gray-900);
+        }
+        
+        .otp-display-area {
+            background: var(--gray-900);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-left: 4px solid var(--blue-500);
+        }
+        
+        .otp-display-area .label {
+            color: var(--gray-400);
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .otp-display-area .value {
+            font-family: monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-100);
+            letter-spacing: 3px;
+        }
+        
+        .email-info {
+            background: var(--gray-100);
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .email-info i {
+            color: var(--blue-500);
+            margin-right: 8px;
         }
         
         .verification-actions {
             display: flex;
             gap: 10px;
-            margin-top: 15px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
         
         .btn-approve-large {
-            background: #28a745;
+            background: var(--green-500);
             color: white;
-            padding: 10px 15px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             flex: 2;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-approve-large:hover {
+            background: var(--green-600);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
         
         .btn-approve-otp-large {
-            background: #102C57;
-            color: #FFCBCB;
-            padding: 10px 15px;
+            background: var(--blue-500);
+            color: white;
+            padding: 12px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             flex: 2;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-approve-otp-large:hover {
+            background: var(--blue-600);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
         
         .btn-reject-large {
-            background: #ffc107;
-            color: #102C57;
-            padding: 10px 15px;
+            background: #ED8936;
+            color: white;
+            padding: 12px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             flex: 1;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-reject-large:hover {
+            background: #DD6B20;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
         
         .btn-cancel-large {
-            background: #6c757d;
+            background: var(--gray-500);
             color: white;
-            padding: 10px 15px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-cancel-large:hover {
+            background: var(--gray-600);
+            transform: translateY(-2px);
         }
         
         .rejection-reason {
-            margin-top: 10px;
+            margin-top: 15px;
             display: none;
         }
         
@@ -823,81 +1140,75 @@ function extractScreenshotFilename($payment) {
         }
         
         .form-group {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 3px;
-            color: #102C57;
-            font-weight: 500;
+            margin-bottom: 5px;
+            color: var(--gray-700);
+            font-weight: 600;
             font-size: 0.8rem;
         }
         
         .form-control {
             width: 100%;
-            padding: 6px 8px;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            padding: 10px 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
         }
         
-        /* Alert - Matching reservations.php */
-        .alert {
-            padding: 8px 12px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.8rem;
+        .form-control:focus {
+            outline: none;
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(43, 111, 139, 0.1);
         }
         
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border-left: 4px solid #28a745;
+        /* OTP Success Modal */
+        .otp-display-large {
+            background: var(--gray-900);
+            color: var(--gray-100);
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 5px;
+            text-align: center;
+            margin: 20px 0;
+            font-family: monospace;
         }
         
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border-left: 4px solid #dc3545;
+        .balance-message {
+            background: var(--gray-100);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1rem;
+            border: 1px solid var(--gray-200);
         }
         
-        .alert-warning {
-            background: #fff3cd;
-            color: #856404;
-            border-left: 4px solid #ffc107;
+        .email-sent-badge {
+            background: #DEF7EC;
+            color: var(--green-700);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 15px 0;
+            border: 1px solid #B9F5D8;
         }
         
-        /* Email Status */
-        .email-sent {
-            background: #d4edda;
-            color: #155724;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-size: 0.6rem;
-            margin-left: 5px;
-        }
-        
-        .email-failed {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-size: 0.6rem;
-            margin-left: 5px;
-        }
-        
-        @media (max-width: 1024px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .stats-bar {
+                flex-direction: column;
+                gap: 8px;
             }
         }
         
-        @media (max-width: 768px) {
-            .filter-section {
+        @media (max-width: 992px) {
+            .filter-section form {
                 flex-direction: column;
             }
             
@@ -908,10 +1219,6 @@ function extractScreenshotFilename($payment) {
             .verification-actions {
                 flex-direction: column;
             }
-            
-            .quick-actions {
-                justify-content: center;
-            }
         }
     </style>
 </head>
@@ -921,14 +1228,15 @@ function extractScreenshotFilename($payment) {
     
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Top Bar - Matching reservations.php -->
-        <div class="top-bar" style="padding: 12px 20px; margin-bottom: 20px;">
-            <h1 style="font-size: 1.4rem;">
-                  <i class="fas fa-credit-card"></i> Verify Payments
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <h1>
+                <i class="fas fa-credit-card"></i>
+                Verify Payments
             </h1>
-            <div class="date" style="font-size: 0.8rem;">
-                <i class="far fa-calendar-alt"></i> <?php echo date('l, F d, Y'); ?>
-                <span style="margin-left: 10px;"><i class="far fa-clock"></i> <?php echo date('h:i A'); ?></span>
+            <div class="date-info">
+                <span><i class="far fa-calendar-alt"></i> <?php echo date('l, F d, Y'); ?></span>
+                <span><i class="far fa-clock"></i> <?php echo date('h:i A'); ?></span>
             </div>
         </div>
         
@@ -939,7 +1247,7 @@ function extractScreenshotFilename($payment) {
             </div>
         <?php endif; ?>
         
-        <!-- Tab Navigation - Matching reservations.php -->
+        <!-- Tab Navigation -->
         <div class="tab-nav">
             <a href="reservations.php" class="tab-btn">
                 <i class="fas fa-calendar-check"></i> Reservations
@@ -947,23 +1255,38 @@ function extractScreenshotFilename($payment) {
             <a href="verify-payments.php" class="tab-btn active">
                 <i class="fas fa-credit-card"></i> Verify Payments
                 <?php if ($pending_count > 0): ?>
-                    <span style="background: #ffc107; color: #102C57; padding: 2px 6px; border-radius: 10px; font-size: 0.6rem; margin-left: 5px;"><?php echo $pending_count; ?></span>
+                    <span class="badge"><?php echo $pending_count; ?></span>
                 <?php endif; ?>
             </a>
         </div>
         
-        <!-- Quick Stats -->
-        <div class="payment-stats-mini">
-            <span class="stat-mini"><strong><?php echo $total_payments; ?></strong> Total Payments</span>
-            <span class="stat-mini warning"><strong><?php echo $pending_count; ?></strong> Pending</span>
-            <span class="stat-mini"><strong><?php echo $completed_count; ?></strong> Completed</span>
-            <span class="stat-mini"><strong><?php echo $failed_count; ?></strong> Failed</span>
-            <span class="stat-mini"><strong>₱<?php echo number_format($total_amount, 2); ?></strong> Total Amount</span>
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <i class="fas fa-credit-card"></i>
+                <span><strong><?php echo $total_payments; ?></strong> Total Payments</span>
+            </div>
+            <div class="stat-item warning">
+                <i class="fas fa-clock"></i>
+                <span><strong><?php echo $pending_count; ?></strong> Pending</span>
+            </div>
+            <div class="stat-item success">
+                <i class="fas fa-check-circle"></i>
+                <span><strong><?php echo $completed_count; ?></strong> Completed</span>
+            </div>
+            <div class="stat-item danger">
+                <i class="fas fa-times-circle"></i>
+                <span><strong><?php echo $failed_count; ?></strong> Failed</span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-coins"></i>
+                <span><strong>₱<?php echo number_format($total_amount, 2); ?></strong> Total Amount</span>
+            </div>
         </div>
         
-        <!-- Filter Section - Matching reservations.php -->
+        <!-- Filter Section -->
         <div class="filter-section">
-            <form method="GET" style="display: flex; gap: 8px; flex-wrap: wrap; width: 100%;">
+            <form method="GET">
                 <div class="filter-group">
                     <label>Status</label>
                     <select name="status" class="filter-input">
@@ -982,13 +1305,13 @@ function extractScreenshotFilename($payment) {
                     <input type="date" name="date_to" class="filter-input" value="<?php echo $date_to; ?>">
                 </div>
                 <div class="filter-group" style="display: flex; gap: 5px;">
-                    <button type="submit" class="btn btn-primary" style="padding: 5px 10px; font-size: 0.75rem;">Apply</button>
-                    <a href="verify-payments.php" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.75rem;">Reset</a>
+                    <button type="submit" class="btn btn-primary">Apply</button>
+                    <a href="verify-payments.php" class="btn btn-outline">Reset</a>
                 </div>
             </form>
         </div>
         
-        <!-- Payments Table - Matching reservations.php style -->
+        <!-- Payments Table -->
         <div class="card">
             <div class="card-header">
                 <h3><i class="fas fa-credit-card"></i> Payment Verifications</h3>
@@ -996,8 +1319,8 @@ function extractScreenshotFilename($payment) {
             </div>
             <div class="card-body">
                 <?php if (empty($payments)): ?>
-                    <div style="text-align: center; padding: 40px; color: #666;">
-                        <i class="fas fa-credit-card" style="font-size: 2rem; color: #FFCBCB; margin-bottom: 10px;"></i>
+                    <div class="empty-state">
+                        <i class="fas fa-credit-card"></i>
                         <p>No payments found matching your criteria.</p>
                     </div>
                 <?php else: ?>
@@ -1021,7 +1344,6 @@ function extractScreenshotFilename($payment) {
                             </thead>
                             <tbody>
                                 <?php foreach ($payments as $payment): 
-                                    // FIXED: Use the simplified extractScreenshotFilename function
                                     $screenshot = extractScreenshotFilename($payment);
                                     $balance_class = ($payment['remaining_balance'] <= 0) ? 'balance-zero' : 'balance-positive';
                                 ?>
@@ -1030,32 +1352,31 @@ function extractScreenshotFilename($payment) {
                                     <td><strong><?php echo substr($payment['payment_number'], -8); ?></strong></td>
                                     <td>
                                         <?php echo $payment['reservation_number']; ?>
-                                        <br><small style="color: #666;"><?php echo ucfirst($payment['reservation_status']); ?></small>
+                                        <br><small style="color: var(--gray-600);"><?php echo ucfirst($payment['reservation_status']); ?></small>
                                     </td>
                                     <td>
                                         <?php echo htmlspecialchars($payment['guest_name']); ?>
-                                        <br><small style="color: #666;"><?php echo $payment['guest_phone']; ?></small>
+                                        <br><small style="color: var(--gray-600);"><?php echo $payment['guest_phone']; ?></small>
                                     </td>
                                     <td>
                                         <?php if ($payment['room_number']): ?>
                                             Rm <?php echo $payment['room_number']; ?>
-                                            <br><small><?php echo $payment['room_type']; ?></small>
+                                            <br><small style="color: var(--gray-600);"><?php echo $payment['room_type']; ?></small>
                                         <?php else: ?>
-                                            -
+                                            <span style="color: var(--gray-400);">-</span>
                                         <?php endif; ?>
                                     </td>
                                     <td><strong>₱<?php echo number_format($payment['amount'], 0); ?></strong></td>
                                     <td>
-                                        <?php 
-                                        $method = $payment['payment_method'];
-                                        if ($method == 'gcash') {
-                                            echo '<span style="color: #004085;"><i class="fab fa-google-pay"></i> GCash</span>';
-                                        } elseif ($method == 'cash') {
-                                            echo '<span style="color: #28a745;"><i class="fas fa-money-bill"></i> Cash</span>';
-                                        } else {
-                                            echo ucfirst($method);
-                                        }
-                                        ?>
+                                        <span class="method-badge method-<?php echo $payment['payment_method']; ?>">
+                                            <?php if ($payment['payment_method'] == 'gcash'): ?>
+                                                <i class="fab fa-google-pay"></i> GCash
+                                            <?php elseif ($payment['payment_method'] == 'cash'): ?>
+                                                <i class="fas fa-money-bill"></i> Cash
+                                            <?php else: ?>
+                                                <?php echo ucfirst($payment['payment_method']); ?>
+                                            <?php endif; ?>
+                                        </span>
                                     </td>
                                     <td>₱<?php echo number_format($payment['reservation_total'], 0); ?></td>
                                     <td>₱<?php echo number_format($payment['reservation_paid'], 0); ?></td>
@@ -1067,8 +1388,6 @@ function extractScreenshotFilename($payment) {
                                             <?php echo ucfirst($payment['payment_status']); ?>
                                         </span>
                                     </td>
-
-                                   
                                     <td>
                                         <div class="action-buttons">
                                             <?php if ($payment['payment_status'] == 'pending' && $screenshot): ?>
@@ -1077,10 +1396,10 @@ function extractScreenshotFilename($payment) {
                                                         <i class="fas fa-eye"></i> View
                                                     </button>
                                                 <?php else: ?>
-                                                    <span style="color: #999;" title="Only Cash and GCash are accepted">Invalid method</span>
+                                                    <span style="color: var(--gray-400);" title="Only Cash and GCash are accepted">Invalid</span>
                                                 <?php endif; ?>
                                             <?php elseif ($payment['payment_status'] == 'pending'): ?>
-                                                <span style="color: #999;">No screenshot</span>
+                                                <span style="color: var(--gray-400);">No screenshot</span>
                                             <?php endif; ?>
                                         </div>
                                     </td>
@@ -1102,7 +1421,7 @@ function extractScreenshotFilename($payment) {
                 <button class="modal-close" onclick="closeScreenshotModal()">&times;</button>
             </div>
             
-            <div id="screenshotContainer" style="text-align: center; margin-bottom: 15px;">
+            <div id="screenshotContainer" style="text-align: center;">
                 <img id="screenshotImage" class="screenshot-image" src="" alt="Payment Screenshot">
             </div>
             
@@ -1117,23 +1436,14 @@ function extractScreenshotFilename($payment) {
             </div>
             
             <!-- OTP Display Area (shown if OTP exists) -->
-            <div id="otpDisplayArea" style="display: none; margin-bottom: 15px;">
-                <div style="background: #f0f8ff; padding: 10px; border-radius: 5px; border-left: 4px solid #102C57;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <span style="color: #102C57; font-weight: bold;">Current OTP:</span>
-                            <span id="currentOtp" class="otp-badge" style="font-size: 1.2rem; margin-left: 10px;"></span>
-                        </div>
-                        <div>
-                            <span style="color: #666; font-size: 0.8rem;">Valid for check-in</span>
-                        </div>
-                    </div>
-                </div>
+            <div id="otpDisplayArea" style="display: none;" class="otp-display-area">
+                <div class="label">Current OTP</div>
+                <div class="value" id="currentOtp"></div>
             </div>
             
             <!-- Email Info -->
-            <div id="emailInfo" style="background: #e8f4fd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 0.8rem; display: none;">
-                <i class="fas fa-envelope" style="color: #1679AB;"></i> 
+            <div id="emailInfo" class="email-info" style="display: none;">
+                <i class="fas fa-envelope"></i> 
                 <span id="guestEmailDisplay"></span>
             </div>
             
@@ -1196,29 +1506,24 @@ function extractScreenshotFilename($payment) {
         </div>
     </div>
     
-    <!-- OTP Success Modal (for showing generated OTP) -->
+    <!-- OTP Success Modal -->
     <div class="modal" id="otpSuccessModal">
-        <div class="modal-content" style="max-width: 400px; text-align: center;">
+        <div class="modal-content" style="max-width: 450px; text-align: center;">
             <div class="modal-header">
-                <h3><i class="fas fa-check-circle" style="color: #28a745;"></i> Payment Approved</h3>
+                <h3><i class="fas fa-check-circle" style="color: var(--green-500);"></i> Payment Approved</h3>
                 <button class="modal-close" onclick="closeOtpModal()">&times;</button>
             </div>
-            <div style="padding: 20px;">
-                <div style="font-size: 3rem; color: #28a745; margin-bottom: 15px;">
+            <div style="padding: 10px;">
+                <div style="font-size: 3rem; color: var(--green-500); margin-bottom: 15px;">
                     <i class="fas fa-key"></i>
                 </div>
-                <h4 style="color: #102C57; margin-bottom: 10px;">OTP Generated Successfully</h4>
-                <div class="otp-display" id="generatedOtpDisplay"></div>
-                <div id="balanceDisplay" style="margin-top: 10px; padding: 8px; background: #e8f4fd; border-radius: 4px; font-size: 0.9rem;">
-                    <span id="balanceMessage"></span>
-                </div>
-                <div id="emailSentDisplay" style="margin-top: 10px; padding: 8px; background: #d4edda; color: #155724; border-radius: 4px; display: none;">
+                <h4 style="color: var(--gray-900); margin-bottom: 10px; font-family: 'Montserrat', sans-serif;">OTP Generated Successfully</h4>
+                <div class="otp-display-large" id="generatedOtpDisplay"></div>
+                <div class="balance-message" id="balanceMessage"></div>
+                <div id="emailSentDisplay" class="email-sent-badge" style="display: none;">
                     <i class="fas fa-envelope"></i> OTP sent to guest email
                 </div>
-                <p style="color: #666; font-size: 0.9rem; margin-top: 15px;">
-                    Share this OTP with the guest for check-in verification
-                </p>
-                <button class="btn btn-primary" onclick="closeOtpModal()" style="margin-top: 15px; width: 100%;">
+                <button class="btn btn-primary" onclick="closeOtpModal()" style="margin-top: 15px; width: 100%; padding: 12px;">
                     <i class="fas fa-check"></i> OK
                 </button>
             </div>

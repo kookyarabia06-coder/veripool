@@ -2,6 +2,7 @@
 /**
  * Veripool Reservation System - Admin Dashboard
  * Dashboard view showing recent online and walk-in reservations
+ * Coastal Harmony Theme - Gray, Blue, Green
  */
 
 // Enable error reporting
@@ -37,59 +38,6 @@ $current_user = $db->getRow("SELECT * FROM users WHERE id = ?", [$_SESSION['user
 
 // ========== DASHBOARD STATISTICS ==========
 $today = date('Y-m-d');
-
-// Get today's check-ins (expected arrivals) - separated by type
-$today_checkins_online = $db->getRows("
-    SELECT r.*, 
-           u.full_name as guest_name, 
-           u.phone as guest_phone,
-           rm.room_number,
-           rt.name as room_type,
-           ep.otp_code,
-           ep.status as pass_status
-    FROM reservations r
-    JOIN users u ON r.user_id = u.id
-    LEFT JOIN rooms rm ON r.room_id = rm.id
-    LEFT JOIN room_types rt ON rm.room_type_id = rt.id
-    LEFT JOIN entry_passes ep ON r.id = ep.reservation_id
-    WHERE r.check_in_date = ? 
-    AND r.status IN ('confirmed', 'pending')
-    AND (r.created_by IS NULL OR r.created_by != 'walkin')
-    ORDER BY r.created_at DESC
-", [$today]);
-
-$today_checkins_walkin = $db->getRows("
-    SELECT r.*, 
-           u.full_name as guest_name, 
-           u.phone as guest_phone,
-           rm.room_number,
-           rt.name as room_type
-    FROM reservations r
-    JOIN users u ON r.user_id = u.id
-    LEFT JOIN rooms rm ON r.room_id = rm.id
-    LEFT JOIN room_types rt ON rm.room_type_id = rt.id
-    WHERE r.check_in_date = ? 
-    AND r.status IN ('confirmed', 'pending')
-    AND r.created_by = 'walkin'
-    ORDER BY r.created_at DESC
-", [$today]);
-
-// Get today's check-outs (expected departures)
-$today_checkouts = $db->getRows("
-    SELECT r.*, 
-           u.full_name as guest_name, 
-           u.phone as guest_phone,
-           rm.room_number,
-           rt.name as room_type,
-           r.created_by
-    FROM reservations r
-    JOIN users u ON r.user_id = u.id
-    LEFT JOIN rooms rm ON r.room_id = rm.id
-    LEFT JOIN room_types rt ON rm.room_type_id = rt.id
-    WHERE r.check_out_date = ? 
-    AND r.status = 'checked_in'
-    ORDER BY r.created_at DESC
-", [$today]);
 
 // Get recent online reservations (last 7 days)
 $recent_online = $db->getRows("
@@ -247,452 +195,479 @@ function getStatusDisplay($status) {
     <link rel="icon" type="image/png" sizes="16x16" href="/veripool/assets/favicon/favicon-16x16.png">
     <link rel="manifest" href="/veripool/assets/favicon/site.webmanifest">
     
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/admin.css">
-    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Sidebar CSS (already updated with Coastal Harmony theme) -->
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    
     <style>
-        /* Dashboard Specific Styles */
-        .dashboard-header {
-            margin-bottom: 25px;
+        /* ===== COASTAL HARMONY THEME - ADMIN DASHBOARD ===== */
+        :root {
+            --gray-100: #F7FAFC;
+            --gray-200: #EDF2F7;
+            --gray-300: #E2E8F0;
+            --gray-400: #CBD5E0;
+            --gray-500: #A0AEC0;
+            --gray-600: #718096;
+            --gray-700: #4A5568;
+            --gray-800: #2D3748;
+            --gray-900: #1A202C;
+            
+            --blue-500: #2B6F8B;
+            --blue-600: #1E5770;
+            --blue-700: #143F52;
+            
+            --green-500: #2F855A;
+            --green-600: #276749;
+            --green-700: #1E4B38;
+            
+            --white: #FFFFFF;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.08);
         }
         
-        .dashboard-header h1 {
-            font-size: 1.6rem;
-            color: #102C57;
-            margin-bottom: 5px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
-        .dashboard-header .date {
-            color: #666;
-            font-size: 0.9rem;
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            overflow-x: hidden;
         }
         
-        /* Stats Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
+        /* Main Content Layout - Fixed sidebar width */
+        .main-content {
+            margin-left: 280px; /* Same as sidebar width */
+            padding: 30px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--gray-100) 0%, var(--white) 100%);
+            position: relative;
         }
         
-        .stat-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border-left: 4px solid #1679AB;
-            transition: transform 0.2s;
+        /* Decorative background elements */
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(43, 111, 139, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
         }
         
-        .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(22,121,171,0.1);
+        .main-content::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(47, 133, 90, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
         }
         
-        .stat-card.online {
-            border-left-color: #1679AB;
-        }
-        
-        .stat-card.walkin {
-            border-left-color: #28a745;
-        }
-        
-        .stat-card .stat-title {
-            color: #666;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-        
-        .stat-card .stat-number {
-            color: #102C57;
-            font-size: 2rem;
-            font-weight: bold;
-        }
-        
-        .stat-card .stat-icon {
-            float: right;
-            color: #FFB1B1;
-            font-size: 2.5rem;
-            opacity: 0.5;
-        }
-        
-        /* Section Headers */
-        .section-header {
+        /* Top Bar */
+        .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 25px 0 15px 0;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #FFCBCB;
+            margin-bottom: 30px;
+            padding: 20px 25px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            z-index: 2;
         }
         
-        .section-header h2 {
-            color: #102C57;
+        .top-bar h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .top-bar h1 i {
+            color: var(--blue-500);
+            background: var(--gray-100);
+            padding: 10px;
+            border-radius: 12px;
             font-size: 1.2rem;
+        }
+        
+        .date-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            background: var(--gray-100);
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .date-info i {
+            color: var(--blue-500);
+            margin-right: 5px;
+        }
+        
+        /* Alert Messages */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid;
+            position: relative;
+            z-index: 2;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .alert i {
+            font-size: 1.2rem;
+        }
+        
+        .alert-success {
+            border-left-color: var(--green-500);
+            color: var(--green-700);
+        }
+        
+        .alert-error {
+            border-left-color: #C53030;
+            color: #C53030;
+            background: #FFF5F5;
+            border-color: #FED7D7;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .stat-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, transparent 50%, var(--gray-100) 50%);
+            opacity: 0.5;
+        }
+        
+        .stat-card.online {
+            border-top: 4px solid var(--blue-500);
+        }
+        
+        .stat-card.walkin {
+            border-top: 4px solid var(--green-500);
+        }
+        
+        .stat-card.pending {
+            border-top: 4px solid #ED8936;
+        }
+        
+        .stat-card.active {
+            border-top: 4px solid var(--green-500);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .stat-title {
+            color: var(--gray-600);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         
-        .section-header h2 i {
-            color: #1679AB;
+        .stat-title i {
+            color: var(--blue-500);
+            font-size: 1rem;
         }
         
-        .section-header .badge {
-            background: #FFB1B1;
-            color: #102C57;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-        
-        .section-header .view-link {
-            color: #1679AB;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        
-        .section-header .view-link:hover {
-            text-decoration: underline;
-        }
-        
-        /* Type Badge */
-        .type-badge {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 8px;
-            font-size: 0.6rem;
-            font-weight: 600;
-            margin-left: 5px;
-        }
-        
-        .type-online {
-            background: #1679AB;
-            color: white;
-        }
-        
-        .type-walkin {
-            background: #28a745;
-            color: white;
-        }
-        
-        /* Activity Cards */
-        .activity-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .activity-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        
-        .activity-card .card-header {
-            padding: 12px 15px;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .activity-card.checkin-online .card-header {
-            background: #1679AB;
-            color: white;
-        }
-        
-        .activity-card.checkin-walkin .card-header {
-            background: #28a745;
-            color: white;
-        }
-        
-        .activity-card.checkout .card-header {
-            background: #dc3545;
-            color: white;
-        }
-        
-        .activity-card .card-header i {
-            margin-right: 5px;
-        }
-        
-        .activity-card .card-header .count {
-            background: rgba(255,255,255,0.3);
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-        }
-        
-        .activity-card .card-body {
-            padding: 10px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        
-        .activity-item {
-            display: flex;
-            align-items: center;
-            padding: 8px;
-            border-bottom: 1px solid #f0f0f0;
-            transition: background 0.2s;
-        }
-        
-        .activity-item:hover {
-            background: #f8f9fa;
-        }
-        
-        .activity-item:last-child {
-            border-bottom: none;
-        }
-        
-        .activity-icon {
-            width: 30px;
-            height: 30px;
-            background: #f0f0f0;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 10px;
-            color: #1679AB;
-        }
-        
-        .activity-details {
-            flex: 1;
-        }
-        
-        .activity-guest {
-            font-weight: 600;
-            color: #102C57;
-            font-size: 0.8rem;
-        }
-        
-        .activity-room {
-            font-size: 0.65rem;
-            color: #1679AB;
-        }
-        
-        .activity-time {
-            font-size: 0.6rem;
-            color: #666;
-        }
-        
-        .activity-otp {
-            font-family: monospace;
-            font-size: 0.65rem;
-            background: #102C57;
-            color: #FFCBCB;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 20px 10px;
-            color: #999;
-        }
-        
-        .empty-state i {
-            font-size: 1.5rem;
-            color: #FFCBCB;
+        .stat-number {
+            color: var(--gray-900);
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1;
             margin-bottom: 5px;
         }
         
-        /* Recent Reservations Tables */
+        .stat-label {
+            color: var(--gray-500);
+            font-size: 0.8rem;
+        }
+        
+        .stat-icon {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            font-size: 3rem;
+            color: var(--gray-200);
+            z-index: 0;
+        }
+        
+        /* Reservations Grid */
         .reservations-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 10px;
+            gap: 25px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 2;
         }
         
         .reservation-card {
-            background: white;
-            border-radius: 12px;
+            background: var(--white);
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s ease;
+        }
+        
+        .reservation-card:hover {
+            box-shadow: var(--shadow-lg);
         }
         
         .reservation-card .card-header {
-            padding: 12px 15px;
+            padding: 15px 20px;
             font-weight: 600;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-family: 'Montserrat', sans-serif;
         }
         
         .reservation-card.online .card-header {
-            background: #1679AB;
+            background: linear-gradient(135deg, var(--blue-500), var(--blue-600));
             color: white;
         }
         
         .reservation-card.walkin .card-header {
-            background: #28a745;
+            background: linear-gradient(135deg, var(--green-500), var(--green-600));
             color: white;
         }
         
+        .reservation-card .card-header i {
+            margin-right: 8px;
+        }
+        
         .reservation-card .card-header .badge {
-            background: rgba(255,255,255,0.3);
-            padding: 2px 8px;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 30px;
             font-size: 0.7rem;
+            font-weight: 500;
         }
         
         .reservation-card .card-body {
-            padding: 15px;
-            max-height: 400px;
+            padding: 20px;
+            max-height: 500px;
             overflow-y: auto;
+            background: var(--white);
         }
         
         .reservation-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
         }
         
         .reservation-table th {
             text-align: left;
-            padding: 8px 5px;
-            background: #f8f9fa;
-            color: #102C57;
+            padding: 12px 8px;
+            background: var(--gray-100);
+            color: var(--gray-700);
             font-weight: 600;
-            border-bottom: 2px solid #FFCBCB;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--gray-200);
         }
         
         .reservation-table td {
-            padding: 8px 5px;
-            border-bottom: 1px solid #e9ecef;
+            padding: 12px 8px;
+            border-bottom: 1px solid var(--gray-200);
             vertical-align: middle;
+            color: var(--gray-700);
         }
         
         .reservation-table tr:hover td {
-            background: #f8f9fa;
+            background: var(--gray-100);
         }
         
+        .guest-info {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+        
+        .room-number {
+            font-family: monospace;
+            background: var(--gray-100);
+            padding: 3px 6px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .date-badge {
+            background: var(--gray-100);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            color: var(--gray-700);
+        }
+        
+        /* Status Badges */
         .status-badge {
             display: inline-block;
-            padding: 3px 8px;
-            border-radius: 10px;
+            padding: 4px 10px;
+            border-radius: 30px;
             font-size: 0.65rem;
-            font-weight: 500;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
-        .status-pending { background: #fff3cd; color: #856404; }
-        .status-confirmed { background: #d4edda; color: #155724; }
-        .status-checked_in { background: #cce5ff; color: #004085; }
-        .status-checked_out { background: #e2e3e5; color: #383d41; }
-        .status-cancelled { background: #f8d7da; color: #721c24; }
+        .status-pending { 
+            background: #FEF3C7; 
+            color: #92400E; 
+        }
+        
+        .status-confirmed { 
+            background: #DEF7EC; 
+            color: var(--green-700); 
+        }
+        
+        .status-checked_in { 
+            background: #E1EFFE; 
+            color: var(--blue-700); 
+        }
+        
+        .status-checked_out { 
+            background: var(--gray-200); 
+            color: var(--gray-700); 
+        }
+        
+        .status-cancelled { 
+            background: #FEE2E2; 
+            color: #B91C1C; 
+        }
         
         .otp-badge {
-            background: #102C57;
-            color: #FFCBCB;
-            padding: 2px 5px;
-            border-radius: 4px;
+            background: var(--gray-900);
+            color: var(--gray-100);
+            padding: 3px 8px;
+            border-radius: 6px;
             font-family: monospace;
             font-size: 0.7rem;
-            font-weight: bold;
-        }
-        
-        .days-badge {
-            background: #e7f5ff;
-            color: #1679AB;
-            padding: 2px 5px;
-            border-radius: 10px;
-            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 1px;
         }
         
         .action-select {
-            padding: 3px;
-            font-size: 0.65rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 3px;
-            width: 65px;
+            padding: 6px 8px;
+            font-size: 0.7rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-700);
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 70px;
+        }
+        
+        .action-select:focus {
+            outline: none;
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(43, 111, 139, 0.1);
         }
         
         .action-select.online option[value="checked_in"] {
-            color: #999;
-            background: #f5f5f5;
-        }
-        
-        .btn-icon {
-            padding: 4px 6px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 0.65rem;
-            transition: all 0.2s;
-            background: #1679AB;
-            color: white;
-        }
-        
-        .btn-icon:hover {
-            transform: translateY(-1px);
-            filter: brightness(0.95);
-        }
-        
-        .alert {
-            padding: 8px 12px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.8rem;
-        }
-        
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border-left: 4px solid #28a745;
-        }
-        
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border-left: 4px solid #dc3545;
+            color: var(--gray-400);
         }
         
         .view-all-link {
             text-align: center;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #e9ecef;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--gray-200);
         }
         
         .view-all-link a {
-            color: #1679AB;
+            color: var(--blue-500);
             text-decoration: none;
             font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
         }
         
         .view-all-link a:hover {
-            text-decoration: underline;
+            color: var(--green-500);
+            gap: 12px;
         }
         
-        @media (max-width: 1024px) {
+        /* Responsive - No mobile support as requested */
+        @media (max-width: 1200px) {
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            
-            .activity-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .reservations-grid {
-                grid-template-columns: 1fr;
-            }
         }
         
-        @media (max-width: 768px) {
-            .stats-grid {
+        @media (max-width: 992px) {
+            .reservations-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -705,14 +680,14 @@ function getStatusDisplay($status) {
     <!-- Main Content -->
     <div class="main-content">
         <!-- Top Bar -->
-        <div class="top-bar" style="padding: 12px 20px; margin-bottom: 20px;">
-            <h1 style="font-size: 1.4rem;">
+        <div class="top-bar">
+            <h1>
                 <i class="fas fa-calendar-check"></i>
                 Dashboard
             </h1>
-            <div class="date" style="font-size: 0.8rem;">
-                <i class="far fa-calendar-alt"></i> <?php echo date('l, F d, Y'); ?>
-                <span style="margin-left: 10px;"><i class="far fa-clock"></i> <?php echo date('h:i A'); ?></span>
+            <div class="date-info">
+                <span><i class="far fa-calendar-alt"></i> <?php echo date('l, F d, Y'); ?></span>
+                <span><i class="far fa-clock"></i> <?php echo date('h:i A'); ?></span>
             </div>
         </div>
         
@@ -723,6 +698,44 @@ function getStatusDisplay($status) {
             </div>
         <?php endif; ?>
         
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card online">
+                <div class="stat-title">
+                    <i class="fas fa-globe"></i> Online
+                </div>
+                <div class="stat-number"><?php echo $online_count; ?></div>
+                <div class="stat-label">recent reservations</div>
+                <div class="stat-icon"><i class="fas fa-globe"></i></div>
+            </div>
+            
+            <div class="stat-card walkin">
+                <div class="stat-title">
+                    <i class="fas fa-user-plus"></i> Walk-in
+                </div>
+                <div class="stat-number"><?php echo $walkin_count; ?></div>
+                <div class="stat-label">recent reservations</div>
+                <div class="stat-icon"><i class="fas fa-user-plus"></i></div>
+            </div>
+            
+            <div class="stat-card pending">
+                <div class="stat-title">
+                    <i class="fas fa-clock"></i> Pending
+                </div>
+                <div class="stat-number"><?php echo $pending_count; ?></div>
+                <div class="stat-label">awaiting confirmation</div>
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+            </div>
+            
+            <div class="stat-card active">
+                <div class="stat-title">
+                    <i class="fas fa-check-circle"></i> Checked In
+                </div>
+                <div class="stat-number"><?php echo $checked_in_count; ?></div>
+                <div class="stat-label">current guests</div>
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+            </div>
+        </div>
         
         <!-- Recent Reservations - Split View -->
         <div class="reservations-grid">
@@ -734,7 +747,7 @@ function getStatusDisplay($status) {
                 </div>
                 <div class="card-body">
                     <?php if (empty($recent_online)): ?>
-                        <div class="empty-state" style="padding: 30px;">
+                        <div class="empty-state">
                             <i class="fas fa-globe"></i>
                             <p>No online reservations found</p>
                         </div>
@@ -744,7 +757,7 @@ function getStatusDisplay($status) {
                                 <tr>
                                     <th>Guest</th>
                                     <th>Room</th>
-                                    <th>Dates</th>
+                                    <th>Date</th>
                                     <th>Status</th>
                                     <th>OTP</th>
                                 </tr>
@@ -753,17 +766,17 @@ function getStatusDisplay($status) {
                                 <?php foreach ($recent_online as $res): ?>
                                 <tr>
                                     <td>
-                                        <strong><?php echo htmlspecialchars(substr($res['guest_name'], 0, 15)); ?></strong>
+                                        <span class="guest-info"><?php echo htmlspecialchars(substr($res['guest_name'], 0, 15)); ?></span>
                                     </td>
                                     <td>
                                         <?php if ($res['room_number']): ?>
-                                            Rm <?php echo $res['room_number']; ?>
+                                            <span class="room-number"><?php echo $res['room_number']; ?></span>
                                         <?php else: ?>
-                                            -
+                                            <span style="color: var(--gray-400);">—</span>
                                         <?php endif; ?>
                                     </td>
                                     <td>
-                                        <?php echo date('m/d', strtotime($res['check_in_date'])); ?>
+                                        <span class="date-badge"><?php echo date('m/d', strtotime($res['check_in_date'])); ?></span>
                                     </td>
                                     <td>
                                         <span class="status-badge <?php echo getStatusBadgeClass($res['status']); ?>">
@@ -774,7 +787,7 @@ function getStatusDisplay($status) {
                                         <?php if (!empty($res['otp_code'])): ?>
                                             <span class="otp-badge"><?php echo $res['otp_code']; ?></span>
                                         <?php else: ?>
-                                            <span style="color: #999;">-</span>
+                                            <span style="color: var(--gray-400);">—</span>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
@@ -796,7 +809,7 @@ function getStatusDisplay($status) {
                 </div>
                 <div class="card-body">
                     <?php if (empty($recent_walkin)): ?>
-                        <div class="empty-state" style="padding: 30px;">
+                        <div class="empty-state">
                             <i class="fas fa-user-plus"></i>
                             <p>No walk-in reservations found</p>
                         </div>
@@ -806,7 +819,7 @@ function getStatusDisplay($status) {
                                 <tr>
                                     <th>Guest</th>
                                     <th>Room</th>
-                                    <th>Dates</th>
+                                    <th>Date</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -815,17 +828,17 @@ function getStatusDisplay($status) {
                                 <?php foreach ($recent_walkin as $res): ?>
                                 <tr>
                                     <td>
-                                        <strong><?php echo htmlspecialchars(substr($res['guest_name'], 0, 15)); ?></strong>
+                                        <span class="guest-info"><?php echo htmlspecialchars(substr($res['guest_name'], 0, 15)); ?></span>
                                     </td>
                                     <td>
                                         <?php if ($res['room_number']): ?>
-                                            Rm <?php echo $res['room_number']; ?>
+                                            <span class="room-number"><?php echo $res['room_number']; ?></span>
                                         <?php else: ?>
-                                            -
+                                            <span style="color: var(--gray-400);">—</span>
                                         <?php endif; ?>
                                     </td>
                                     <td>
-                                        <?php echo date('m/d', strtotime($res['check_in_date'])); ?>
+                                        <span class="date-badge"><?php echo date('m/d', strtotime($res['check_in_date'])); ?></span>
                                     </td>
                                     <td>
                                         <span class="status-badge <?php echo getStatusBadgeClass($res['status']); ?>">

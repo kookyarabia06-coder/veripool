@@ -65,11 +65,6 @@ error_log("Sidebar - Current directory: " . $current_directory);
 error_log("Sidebar - Script dir: " . $script_dir);
 ?>
 
-<!-- Mobile Menu Toggle -->
-<button class="menu-toggle" onclick="toggleSidebar()">
-    <i class="fas fa-bars"></i> Menu
-</button>
-
 <!-- Sidebar -->
 <div class="sidebar <?php echo $user_role; ?>-sidebar" id="sidebar">
     <div class="sidebar-header <?php echo $user_role; ?>-header">
@@ -311,181 +306,456 @@ error_log("Sidebar - Script dir: " . $script_dir);
 </div>
 
 <style>
+/* ===== COASTAL HARMONY THEME - SIDEBAR ===== */
+/* FORCE OVERRIDE - This will override any external CSS */
+:root {
+    --gray-100: #F7FAFC;
+    --gray-200: #EDF2F7;
+    --gray-300: #E2E8F0;
+    --gray-400: #CBD5E0;
+    --gray-500: #A0AEC0;
+    --gray-600: #718096;
+    --gray-700: #4A5568;
+    --gray-800: #2D3748;
+    --gray-900: #1A202C;
+    
+    --blue-500: #2B6F8B;
+    --blue-600: #1E5770;
+    --blue-700: #143F52;
+    
+    --green-500: #2F855A;
+    --green-600: #276749;
+    --green-700: #1E4B38;
+    
+    --white: #FFFFFF;
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Force override all sidebar elements with !important */
+.sidebar,
+.sidebar *,
+.sidebar-header,
+.sidebar-header *,
+.sidebar-menu,
+.sidebar-menu *,
+.sidebar-menu a,
+.sidebar-menu a i,
+.sidebar-menu a span,
+.menu-section-header,
+.menu-section-title,
+.menu-badge,
+.menu-divider,
+.has-dropdown,
+.dropdown-menu,
+.dropdown-menu a,
+.dropdown-menu a i,
+.role-badge,
+.logout a {
+    /* Remove any pink/peach colors */
+    background-color: transparent !important;
+}
+
 /* Dropdown Styles */
 .has-dropdown {
     position: relative;
 }
 
 .has-dropdown > a {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    cursor: pointer !important;
+    color: var(--gray-400) !important;
+    padding: 10px 20px !important;
+    font-size: 0.85rem !important;
+    background-color: transparent !important;
+    border-left: 3px solid transparent !important;
+}
+
+.has-dropdown > a i {
+    color: var(--gray-500) !important;
 }
 
 .dropdown-arrow {
     transition: transform 0.3s ease;
-    font-size: 0.8rem;
-    margin-left: auto;
-    margin-right: 5px;
+    font-size: 0.7rem !important;
+    margin-left: auto !important;
+    margin-right: 5px !important;
+    color: var(--gray-500) !important;
 }
 
 .has-dropdown.open .dropdown-arrow {
     transform: rotate(90deg);
-}
-
-.dropdown-menu {
-    list-style: none;
-    padding-left: 0;
-    display: none;
-    background: rgba(0, 0, 0, 0.15);
-    margin: 0;
-}
-
-.dropdown-menu li {
-    margin: 0;
-}
-
-.dropdown-menu li a {
-    padding: 10px 25px 10px 55px;
-    font-size: 0.9rem;
-    border-left: 3px solid transparent;
-}
-
-.dropdown-menu li a:hover {
-    background: rgba(255,177,177,0.15);
-    border-left-color: #FFB1B1;
-}
-
-.dropdown-menu li a.active {
-    background: rgba(255,177,177,0.2);
-    border-left-color: #FFB1B1;
-    color: #FFB1B1;
-}
-
-.dropdown-menu li a i {
-    font-size: 1rem;
-    width: 20px;
-    margin-right: 10px;
-}
-
-/* Active states for dropdown */
-.has-dropdown.open {
-    background: rgba(255,177,177,0.05);
+    color: var(--blue-500) !important;
 }
 
 .has-dropdown.open > a {
-    color: #FFB1B1;
+    background-color: rgba(43, 111, 139, 0.08) !important;
+    color: var(--white) !important;
+}
+
+.has-dropdown.open > a i {
+    color: var(--blue-500) !important;
+}
+
+.dropdown-menu {
+    list-style: none !important;
+    padding-left: 0 !important;
+    display: none;
+    background-color: var(--gray-800) !important;
+    margin: 0 !important;
+    border-left: 2px solid var(--gray-700) !important;
+}
+
+.dropdown-menu li {
+    margin: 0 !important;
+}
+
+.dropdown-menu li a {
+    padding: 8px 20px 8px 45px !important;
+    font-size: 0.8rem !important;
+    border-left: 3px solid transparent !important;
+    color: var(--gray-400) !important;
+    background-color: transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.dropdown-menu li a:hover {
+    background-color: rgba(43, 111, 139, 0.15) !important;
+    border-left-color: var(--blue-500) !important;
+    color: var(--white) !important;
+}
+
+.dropdown-menu li a:hover i {
+    color: var(--blue-500) !important;
+}
+
+.dropdown-menu li a.active {
+    background-color: rgba(43, 111, 139, 0.2) !important;
+    border-left-color: var(--blue-500) !important;
+    color: var(--white) !important;
+}
+
+.dropdown-menu li a.active i {
+    color: var(--blue-500) !important;
+}
+
+.dropdown-menu li a i {
+    font-size: 0.85rem !important;
+    width: 18px !important;
+    margin-right: 8px !important;
+    color: var(--gray-500) !important;
+    transition: all 0.3s ease;
 }
 
 /* Super Admin dropdown styles */
 .super-admin .has-dropdown.open > a {
-    color: #FFD700;
+    color: #FBBF24 !important;
+}
+
+.super-admin .has-dropdown.open > a i {
+    color: #FBBF24 !important;
 }
 
 .super-admin .dropdown-menu a:hover {
-    background: rgba(255,215,0,0.1);
-    color: #FFD700;
+    background-color: rgba(251, 191, 36, 0.1) !important;
+    color: #FBBF24 !important;
+}
+
+.super-admin .dropdown-menu a:hover i {
+    color: #FBBF24 !important;
 }
 
 .super-admin .dropdown-menu a.active {
-    background: rgba(255,215,0,0.15);
-    color: #FFD700;
-    border-left-color: #FFD700;
+    background-color: rgba(251, 191, 36, 0.15) !important;
+    color: #FBBF24 !important;
+    border-left-color: #FBBF24 !important;
+}
+
+.super-admin .dropdown-menu a.active i {
+    color: #FBBF24 !important;
 }
 
 /* Staff dropdown styles */
 .staff .has-dropdown.open > a {
-    color: #FFB1B1;
+    color: var(--white) !important;
+}
+
+.staff .has-dropdown.open > a i {
+    color: var(--blue-500) !important;
 }
 
 /* Menu badge */
 .menu-badge {
-    display: inline-block;
-    padding: 2px 6px;
-    border-radius: 10px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    margin-left: 8px;
+    display: inline-block !important;
+    padding: 2px 6px !important;
+    border-radius: 20px !important;
+    font-size: 0.6rem !important;
+    font-weight: 600 !important;
+    margin-left: 6px !important;
+    border: 1px solid transparent !important;
+    line-height: 1.2 !important;
 }
 
 .menu-badge.warning {
-    background: #ffc107;
-    color: #102C57;
+    background-color: #FEF3C7 !important;
+    color: #92400E !important;
+    border-color: #FDE68A !important;
 }
 
 .menu-badge.success {
-    background: #28a745;
-    color: white;
+    background-color: #DEF7EC !important;
+    color: var(--green-700) !important;
+    border-color: #B9F5D8 !important;
 }
 
 .menu-badge.danger {
-    background: #dc3545;
-    color: white;
+    background-color: #FEE2E2 !important;
+    color: #B91C1C !important;
+    border-color: #FECACA !important;
 }
 
 /* Menu Section Headers */
 .menu-section-header {
-    padding: 15px 20px 5px 20px;
-    margin-top: 5px;
-    list-style: none;
-    pointer-events: none;
+    padding: 8px 20px 2px 20px !important;
+    margin-top: 2px !important;
+    list-style: none !important;
+    pointer-events: none !important;
+    background-color: transparent !important;
 }
 
 .menu-section-title {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.4);
-    display: block;
+    font-size: 0.6rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.8px !important;
+    text-transform: uppercase !important;
+    color: var(--gray-500) !important;
+    display: block !important;
 }
 
 /* Super Admin section header colors */
 .super-admin .menu-section-title {
-    color: rgba(255, 215, 0, 0.4);
-}
-
-/* Staff section header colors */
-.staff .menu-section-title {
-    color: rgba(255, 177, 177, 0.4);
-}
-
-/* Guest section header colors */
-.guest .menu-section-title {
-    color: rgba(255, 177, 177, 0.4);
+    color: rgba(251, 191, 36, 0.6) !important;
 }
 
 /* Menu divider */
 .menu-divider {
-    height: 1px;
-    background: rgba(255, 255, 255, 0.1);
-    margin: 15px 20px;
-    list-style: none;
+    height: 1px !important;
+    background: linear-gradient(90deg, transparent, var(--gray-700), transparent) !important;
+    margin: 8px 20px !important;
+    list-style: none !important;
+    border: none !important;
 }
 
 /* Role-based divider colors */
 .super-admin .menu-divider {
-    background: rgba(255, 215, 0, 0.2);
+    background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.3), transparent) !important;
 }
 
-.staff .menu-divider {
-    background: rgba(255, 177, 177, 0.2);
+/* Sidebar menu items */
+.sidebar-menu a {
+    transition: all 0.2s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+    padding: 10px 20px !important;
+    font-size: 0.85rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    color: var(--gray-400) !important;
+    text-decoration: none !important;
+    border-left: 3px solid transparent !important;
+    background-color: transparent !important;
 }
 
-.guest .menu-divider {
-    background: rgba(255, 177, 177, 0.2);
+.sidebar-menu a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(43, 111, 139, 0.1), transparent);
+    transition: left 0.5s ease;
+    z-index: -1;
 }
 
-/* Adjust spacing for menu items */
-.sidebar-menu li:not(.menu-section-header):not(.menu-divider) {
-    margin: 2px 0;
+.sidebar-menu a:hover {
+    background-color: var(--gray-800) !important;
+    border-left-color: var(--blue-500) !important;
+    color: var(--white) !important;
 }
 
-/* Hover effects for section headers (disabled) */
-.menu-section-header:hover {
-    background: none;
-    cursor: default;
+.sidebar-menu a:hover i {
+    transform: translateX(3px) scale(1.1);
+    color: var(--blue-500) !important;
+}
+
+.sidebar-menu a.active {
+    background-color: var(--gray-800) !important;
+    border-left-color: var(--green-500) !important;
+    color: var(--white) !important;
+    position: relative;
+}
+
+.sidebar-menu a.active i {
+    color: var(--green-500) !important;
+}
+
+.sidebar-menu a.active::after {
+    content: '';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 5px;
+    background: var(--green-500) !important;
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--green-500);
+}
+
+/* Icon colors - Force override any pink */
+.sidebar-menu a i.fa-tachometer-alt,
+.sidebar-menu a i.fa-user-plus,
+.sidebar-menu a i.fa-users,
+.sidebar-menu a i.fa-bed,
+.sidebar-menu a i.fa-calendar-check,
+.sidebar-menu a i.fa-home,
+.sidebar-menu a i.fa-swimmer,
+.sidebar-menu a i.fa-credit-card,
+.sidebar-menu a i.fa-chart-bar,
+.sidebar-menu a i.fa-history,
+.sidebar-menu a i.fa-check-circle,
+.sidebar-menu a i.fa-sign-in-alt,
+.sidebar-menu a i.fa-sign-out-alt,
+.sidebar-menu a i.fa-arrow-left,
+.sidebar-menu a i.fa-user-circle,
+.sidebar-menu a i.fa-plus-circle,
+.sidebar-menu a i.fa-users-cog,
+.sidebar-menu a i.fa-crown,
+.sidebar-menu a i.fa-user-shield,
+.sidebar-menu a i.fa-user-tie {
+    color: var(--gray-500) !important;
+}
+
+.sidebar-menu a i.fa-tachometer-alt { color: var(--blue-500) !important; }
+.sidebar-menu a i.fa-user-plus { color: var(--green-500) !important; }
+.sidebar-menu a i.fa-calendar-check { color: var(--green-500) !important; }
+.sidebar-menu a i.fa-credit-card { color: var(--green-500) !important; }
+.sidebar-menu a i.fa-check-circle { color: var(--green-500) !important; }
+.sidebar-menu a i.fa-plus-circle { color: var(--green-500) !important; }
+.sidebar-menu a i.fa-crown { color: #FBBF24 !important; }
+.sidebar-menu a i.fa-sign-out-alt { color: #FC8181 !important; }
+
+/* Role badge in header */
+.role-badge {
+    background-color: var(--gray-800) !important;
+    color: var(--gray-300) !important;
+    border: 1px solid var(--gray-700) !important;
+    padding: 2px 8px !important;
+    font-size: 0.6rem !important;
+    border-radius: 20px !important;
+    display: inline-block !important;
+}
+
+/* Sidebar header */
+.sidebar-header {
+    padding: 15px 15px !important;
+    background-color: var(--gray-900) !important;
+    border-bottom: 1px solid var(--gray-800) !important;
+}
+
+.sidebar-header h2 {
+    font-size: 1.3rem !important;
+    margin-bottom: 3px !important;
+    color: var(--white) !important;
+}
+
+.sidebar-header h2 i {
+    font-size: 1.2rem !important;
+    color: var(--blue-500) !important;
+}
+
+.sidebar-header p {
+    font-size: 0.8rem !important;
+    margin-bottom: 2px !important;
+    color: var(--gray-400) !important;
+}
+
+.sidebar-header small {
+    font-size: 0.65rem !important;
+    color: var(--gray-500) !important;
+}
+
+/* Sidebar base */
+.sidebar {
+    background-color: var(--gray-900) !important;
+    color: var(--gray-300) !important;
+    width: 250px !important;
+    height: 100vh;
+    position: fixed;
+    overflow-y: hidden !important;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--gray-800) !important;
+}
+
+.sidebar-menu {
+    flex: 1;
+    overflow-y: visible !important;
+    padding: 5px 0 !important;
+    list-style: none !important;
+    background-color: var(--gray-900) !important;
+}
+
+/* Logout section */
+.sidebar-menu .logout {
+    margin-top: 5px !important;
+    padding-top: 5px !important;
+    border-top: 1px solid var(--gray-800) !important;
+}
+
+.sidebar-menu .logout a {
+    color: var(--gray-400) !important;
+}
+
+.sidebar-menu .logout a:hover {
+    background-color: rgba(220, 53, 69, 0.1) !important;
+    border-left-color: #dc3545 !important;
+    color: #ff6b6b !important;
+}
+
+.sidebar-menu .logout a:hover i {
+    color: #dc3545 !important;
+}
+
+/* Remove any pink from anywhere */
+[class*="FFB1B1"],
+[class*="FFCBCB"],
+[class*="102C57"],
+[style*="FFB1B1"],
+[style*="FFCBCB"],
+[style*="102C57"] {
+    background-color: transparent !important;
+    color: inherit !important;
+    border-color: inherit !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .sidebar-menu a {
+        padding: 8px 15px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .sidebar {
+        overflow-y: auto !important;
+    }
 }
 </style>
 

@@ -2,6 +2,7 @@
 /**
  * Veripool Reservation System - Admin Pools Page
  * Manage the two pools: Ernesto (Private) and Pavilion (Public)
+ * Coastal Harmony Theme - Gray, Blue, Green
  */
 
 // Enable error reporting
@@ -271,71 +272,259 @@ if (isset($_GET['edit'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pool Management - Admin Dashboard</title>
+    <title>Pool Management - Veripool Admin</title>
     <!-- POP UP ICON -->
     <link rel="apple-touch-icon" sizes="180x180" href="/veripool/assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/veripool/assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/veripool/assets/favicon/favicon-16x16.png">
     <link rel="manifest" href="/veripool/assets/favicon/site.webmanifest">
     
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/admin.css">
-    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    
     <style>
-        .pools-stats {
+        /* ===== COASTAL HARMONY THEME - POOLS PAGE ===== */
+        :root {
+            --gray-100: #F7FAFC;
+            --gray-200: #EDF2F7;
+            --gray-300: #E2E8F0;
+            --gray-400: #CBD5E0;
+            --gray-500: #A0AEC0;
+            --gray-600: #718096;
+            --gray-700: #4A5568;
+            --gray-800: #2D3748;
+            --gray-900: #1A202C;
+            
+            --blue-500: #2B6F8B;
+            --blue-600: #1E5770;
+            --blue-700: #143F52;
+            
+            --green-500: #2F855A;
+            --green-600: #276749;
+            --green-700: #1E4B38;
+            
+            --white: #FFFFFF;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.08);
+            
+            /* Consistent Button Colors */
+            --btn-edit: #2B6F8B;
+            --btn-edit-hover: #1E5770;
+            --btn-delete: #C53030;
+            --btn-delete-hover: #9B2C2C;
+            --btn-reset: #718096;
+            --btn-reset-hover: #4A5568;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            overflow-x: hidden;
+        }
+        
+        /* Main Content Layout */
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--gray-100) 0%, var(--white) 100%);
+            position: relative;
+        }
+        
+        /* Decorative background elements */
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(43, 111, 139, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .main-content::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(47, 133, 90, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px 25px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .top-bar h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .top-bar h1 i {
+            color: var(--blue-500);
+            background: var(--gray-100);
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .date-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            background: var(--gray-100);
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .date-info i {
+            color: var(--blue-500);
+            margin-right: 5px;
+        }
+        
+        /* Alert Messages */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid;
+            position: relative;
+            z-index: 2;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .alert i {
+            font-size: 1.2rem;
+        }
+        
+        .alert-success {
+            border-left-color: var(--green-500);
+            color: var(--green-700);
+        }
+        
+        .alert-error {
+            border-left-color: var(--btn-delete);
+            color: var(--btn-delete);
+            background: #FFF5F5;
+            border-color: #FED7D7;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
         }
         
-        .pool-stat-card {
-            background: white;
+        .stat-card {
+            background: var(--white);
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border-left: 4px solid #1679AB;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            border-top: 4px solid var(--blue-500);
+            transition: all 0.3s ease;
         }
         
-        .pool-stat-card .number {
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .stat-card .number {
             font-size: 2rem;
-            font-weight: bold;
-            color: #102C57;
+            font-weight: 700;
+            color: var(--gray-900);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.2;
         }
         
-        .pool-stat-card .label {
-            color: #666;
-            font-size: 0.9rem;
+        .stat-card .label {
+            color: var(--gray-600);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
+        /* Pools Grid */
         .pools-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 30px;
             margin: 30px 0;
+            position: relative;
+            z-index: 2;
         }
         
         .pool-card {
-            background: white;
-            border-radius: 15px;
+            background: var(--white);
+            border-radius: 16px;
             padding: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            border-left: 6px solid #1679AB;
-            transition: transform 0.3s;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
+            border-left: 6px solid var(--blue-500);
+            transition: all 0.3s ease;
         }
         
         .pool-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(22,121,171,0.15);
+            box-shadow: var(--shadow-lg);
         }
         
-        .pool-card.ernesto { border-left-color: #9b59b6; }
-        .pool-card.pavilion { border-left-color: #3498db; }
+        .pool-card.ernesto { border-left-color: #9F7AEA; }
+        .pool-card.pavilion { border-left-color: #4299E1; }
         
-        .pool-card.open { border-left-color: #28a745; }
-        .pool-card.closed { border-left-color: #dc3545; }
-        .pool-card.maintenance { border-left-color: #ffc107; }
+        .pool-card.open { border-left-color: var(--green-500); }
+        .pool-card.closed { border-left-color: var(--btn-delete); }
+        .pool-card.maintenance { border-left-color: #ED8936; }
         
         .pool-header {
             display: flex;
@@ -343,26 +532,45 @@ if (isset($_GET['edit'])) {
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 2px solid var(--gray-200);
         }
         
         .pool-name {
             font-size: 2rem;
-            font-weight: bold;
-            color: #102C57;
+            font-weight: 700;
+            color: var(--gray-900);
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .pool-name i {
+            color: #FBBF24;
+            font-size: 1.4rem;
         }
         
         .pool-type-badge {
-            background: #FFCBCB;
-            color: #102C57;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            padding: 6px 15px;
+            border-radius: 30px;
+            font-size: 0.85rem;
             font-weight: 600;
+            border: 1px solid var(--gray-200);
         }
         
-        .pool-type-badge.private { background: #9b59b6; color: white; }
-        .pool-type-badge.public { background: #3498db; color: white; }
+        .pool-type-badge.private { 
+            background: #E9D8FD; 
+            color: #6B46C1; 
+            border-color: #D6BCFA;
+        }
+        
+        .pool-type-badge.public { 
+            background: #E1EFFE; 
+            color: var(--blue-700); 
+            border-color: #90CDF4;
+        }
         
         .pool-details {
             display: grid;
@@ -372,61 +580,90 @@ if (isset($_GET['edit'])) {
         }
         
         .pool-detail-item {
-            background: #f8f9fa;
+            background: var(--gray-100);
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 12px;
             text-align: center;
+            border: 1px solid var(--gray-200);
         }
         
         .pool-detail-item i {
             font-size: 1.5rem;
-            color: #1679AB;
-            margin-bottom: 5px;
+            color: var(--blue-500);
+            margin-bottom: 8px;
         }
         
         .pool-detail-item .label {
-            font-size: 0.85rem;
-            color: #666;
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .pool-detail-item .value {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #102C57;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            font-family: 'Montserrat', sans-serif;
         }
         
         .hours-badge {
-            background: #e3f2fd;
-            padding: 10px;
-            border-radius: 8px;
+            background: var(--gray-100);
+            padding: 12px;
+            border-radius: 40px;
             text-align: center;
             margin: 15px 0;
             font-weight: 500;
-            color: #1679AB;
+            color: var(--blue-500);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .hours-badge i {
+            margin-right: 5px;
         }
         
         .status-badge {
             display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
-        .status-open { background: #d4edda; color: #155724; }
-        .status-closed { background: #f8d7da; color: #721c24; }
-        .status-maintenance { background: #fff3cd; color: #856404; }
+        .status-open { 
+            background: #DEF7EC; 
+            color: var(--green-700); 
+        }
+        .status-closed { 
+            background: #FEE2E2; 
+            color: var(--btn-delete); 
+        }
+        .status-maintenance { 
+            background: #FEF3C7; 
+            color: #92400E; 
+        }
         
+        /* Today's Reservations */
         .today-reservations {
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 2px solid #f0f0f0;
+            border-top: 2px solid var(--gray-200);
         }
         
         .today-reservations h4 {
-            color: #102C57;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--gray-900);
             margin-bottom: 15px;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .today-reservations h4 i {
+            color: var(--blue-500);
         }
         
         .reservation-list {
@@ -434,145 +671,59 @@ if (isset($_GET['edit'])) {
             overflow-y: auto;
         }
         
+        /* Custom scrollbar */
+        .reservation-list::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        .reservation-list::-webkit-scrollbar-track {
+            background: var(--gray-100);
+        }
+        
+        .reservation-list::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 10px;
+        }
+        
+        .reservation-list::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
+        }
+        
         .reservation-item {
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 5px;
+            background: var(--gray-100);
+            padding: 12px;
+            border-radius: 8px;
             margin-bottom: 8px;
             font-size: 0.9rem;
-            border-left: 3px solid #1679AB;
+            border-left: 3px solid var(--blue-500);
+            border: 1px solid var(--gray-200);
         }
         
         .reservation-item .time {
-            font-weight: bold;
-            color: #1679AB;
+            font-weight: 600;
+            color: var(--blue-500);
         }
         
         .reservation-item .guest {
-            color: #102C57;
+            color: var(--gray-900);
         }
         
         .no-reservations {
-            color: #999;
+            color: var(--gray-500);
             font-style: italic;
             text-align: center;
-            padding: 15px;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal.active {
-            display: flex;
-        }
-        
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #FFCBCB;
-        }
-        
-        .modal-header h3 {
-            color: #102C57;
-        }
-        
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #666;
-        }
-        
-        .modal-close:hover {
-            color: #dc3545;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #102C57;
-            font-weight: 500;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
+            padding: 20px;
+            background: var(--gray-100);
             border-radius: 8px;
-            font-size: 1rem;
+            border: 1px solid var(--gray-200);
         }
         
-        .form-control:focus {
-            border-color: #1679AB;
-            outline: none;
+        .no-reservations i {
+            color: var(--green-500);
+            margin-right: 5px;
         }
         
-        .form-control[readonly] {
-            background: #f5f5f5;
-            cursor: not-allowed;
-        }
-        
-        .btn-submit {
-            background: #1679AB;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            font-size: 1rem;
-        }
-        
-        .btn-submit:hover {
-            background: #102C57;
-        }
-        
-        .btn-reset {
-            background: #6c757d;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            font-size: 1rem;
-            margin-top: 10px;
-        }
-        
-        .btn-reset:hover {
-            background: #5a6268;
-        }
-        
+        /* Action Buttons - CONSISTENT WITH OTHER PAGES */
         .action-buttons {
             display: flex;
             gap: 10px;
@@ -585,50 +736,239 @@ if (isset($_GET['edit'])) {
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            font-weight: 500;
         }
         
         .btn-icon:hover {
             transform: translateY(-2px);
-            filter: brightness(0.95);
+            box-shadow: var(--shadow-sm);
         }
         
-        .btn-edit { background: #17a2b8; color: white; }
-        .btn-reset-small { background: #6c757d; color: white; }
-        .btn-delete { background: #dc3545; color: white; }
+        .btn-edit { 
+            background: var(--btn-edit); 
+            color: white; 
+        }
+        .btn-edit:hover {
+            background: var(--btn-edit-hover);
+        }
         
+        .btn-reset { 
+            background: var(--btn-reset); 
+            color: white; 
+        }
+        .btn-reset:hover {
+            background: var(--btn-reset-hover);
+        }
+        
+        .btn-delete { 
+            background: var(--btn-delete); 
+            color: white; 
+        }
+        .btn-delete:hover {
+            background: var(--btn-delete-hover);
+        }
+        
+        /* Pool Info */
         .pool-info {
-            background: #e8f4fd;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            background: var(--white);
+            padding: 20px;
+            border-radius: 16px;
+            margin-top: 30px;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
         }
         
         .pool-info p {
-            margin: 5px 0;
-            color: #102C57;
+            margin: 8px 0;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .delete-warning {
-            background: #fff3cd;
-            color: #856404;
-            padding: 15px;
-            border-radius: 8px;
+        .pool-info i {
+            color: var(--blue-500);
+            width: 20px;
+        }
+        
+        .pool-info .warning {
+            color: var(--btn-delete);
+        }
+        
+        .pool-info .warning i {
+            color: var(--btn-delete);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(3px);
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
-            border-left: 4px solid #ffc107;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gray-200);
+        }
+        
+        .modal-header h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--gray-900);
+            font-size: 1.2rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modal-header h3 i {
+            color: var(--blue-500);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray-500);
+            transition: color 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            color: var(--btn-delete);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(43, 111, 139, 0.1);
+        }
+        
+        .form-control[readonly] {
+            background: var(--gray-100);
+            color: var(--gray-600);
+        }
+        
+        .btn-submit {
+            background: var(--blue-500);
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-submit:hover {
+            background: var(--blue-600);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--gray-700);
+            border: 2px solid var(--gray-300);
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--blue-500);
+            color: var(--blue-500);
+        }
+        
+        small {
+            display: block;
+            margin-top: 5px;
+            color: var(--gray-500);
+            font-size: 0.8rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .pools-grid {
+                grid-template-columns: 1fr;
+            }
         }
         
         @media (max-width: 768px) {
-            .pools-stats {
-                grid-template-columns: 1fr 1fr;
-            }
-            
-            .pools-grid {
+            .stats-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -639,16 +979,18 @@ if (isset($_GET['edit'])) {
             .action-buttons {
                 flex-direction: column;
             }
+            
+            .pool-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <?php include '../includes/sidebar.php'; ?>
-    
-    <!-- Mobile Menu Toggle -->
-    <button class="menu-toggle" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i> Menu
-    </button>
+    <!-- Include Sidebar -->
+    <?php include BASE_PATH . '/includes/sidebar.php'; ?>
     
     <!-- Main Content -->
     <div class="main-content">
@@ -658,8 +1000,8 @@ if (isset($_GET['edit'])) {
                 <i class="fas fa-swimmer"></i>
                 Pool Management
             </h1>
-            <div class="date">
-                <i class="far fa-calendar-alt"></i> <?php echo date('l, F d, Y'); ?>
+            <div class="date-info">
+                <span><i class="far fa-calendar-alt"></i> <?php echo date('l, F d, Y'); ?></span>
             </div>
         </div>
         
@@ -670,27 +1012,25 @@ if (isset($_GET['edit'])) {
             </div>
         <?php endif; ?>
         
-        <!-- Pool Statistics -->
-        <div class="pools-stats">
-            <div class="pool-stat-card">
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
                 <div class="number"><?php echo $total_pools; ?></div>
                 <div class="label">Total Pools</div>
             </div>
-            <div class="pool-stat-card">
+            <div class="stat-card" style="border-top-color: #9F7AEA;">
                 <div class="number"><?php echo $private_pools; ?></div>
-                <div class="label">Private Pool (Ernesto)</div>
+                <div class="label">Private (Ernesto)</div>
             </div>
-            <div class="pool-stat-card">
+            <div class="stat-card" style="border-top-color: #4299E1;">
                 <div class="number"><?php echo $public_pools; ?></div>
-                <div class="label">Public Pool (Pavilion)</div>
+                <div class="label">Public (Pavilion)</div>
             </div>
-            <div class="pool-stat-card">
+            <div class="stat-card" style="border-top-color: var(--green-500);">
                 <div class="number"><?php echo $total_reservations; ?></div>
                 <div class="label">Active Reservations</div>
             </div>
         </div>
-        
-       
         
         <!-- Pools Grid -->
         <div class="pools-grid">
@@ -702,7 +1042,7 @@ if (isset($_GET['edit'])) {
                     <span class="pool-name">
                         <?php echo htmlspecialchars($pool['name']); ?>
                         <?php if (strtolower($pool['name']) == 'ernesto'): ?>
-                            <i class="fas fa-star" style="color: #ffc107; font-size: 1.2rem; margin-left: 5px;"></i>
+                            <i class="fas fa-star"></i>
                         <?php endif; ?>
                     </span>
                     <span class="pool-type-badge <?php echo $pool['type']; ?>">
@@ -714,11 +1054,11 @@ if (isset($_GET['edit'])) {
                     <div class="pool-detail-item">
                         <i class="fas fa-users"></i>
                         <div class="label">Capacity</div>
-                        <div class="value"><?php echo $pool['capacity']; ?> people</div>
+                        <div class="value"><?php echo $pool['capacity']; ?></div>
                     </div>
                     
                     <div class="pool-detail-item">
-                        <i class="fas fa-clock"></i>
+                        <i class="fas fa-flag"></i>
                         <div class="label">Status</div>
                         <div class="value">
                             <span class="status-badge status-<?php echo $pool['status']; ?>">
@@ -729,7 +1069,7 @@ if (isset($_GET['edit'])) {
                 </div>
                 
                 <div class="hours-badge">
-                    <i class="far fa-clock"></i> Operating Hours: <?php echo htmlspecialchars($pool['operating_hours']); ?>
+                    <i class="far fa-clock"></i> <?php echo htmlspecialchars($pool['operating_hours']); ?>
                 </div>
                 
                 <!-- Today's Reservations -->
@@ -751,7 +1091,7 @@ if (isset($_GET['edit'])) {
                             <?php endforeach; ?>
                         <?php else: ?>
                             <div class="no-reservations">
-                                <i class="fas fa-check-circle" style="color: #28a745;"></i> No active reservations
+                                <i class="fas fa-check-circle"></i> No active reservations
                             </div>
                         <?php endif; ?>
                     </div>
@@ -759,12 +1099,12 @@ if (isset($_GET['edit'])) {
                 
                 <div class="action-buttons">
                     <a href="?edit=<?php echo $pool['id']; ?>" class="btn-icon btn-edit">
-                        <i class="fas fa-edit"></i> Edit Settings
+                        <i class="fas fa-edit"></i> Edit
                     </a>
                     <form method="POST" style="flex: 1;" onsubmit="return confirm('Are you sure you want to reset this pool to default settings?');">
                         <input type="hidden" name="action" value="reset_pool">
                         <input type="hidden" name="pool_id" value="<?php echo $pool['id']; ?>">
-                        <button type="submit" class="btn-icon btn-reset-small">
+                        <button type="submit" class="btn-icon btn-reset">
                             <i class="fas fa-undo"></i> Reset
                         </button>
                     </form>
@@ -786,7 +1126,7 @@ if (isset($_GET['edit'])) {
         <div class="pool-info">
             <p><i class="fas fa-info-circle"></i> <strong>Ernesto Pool:</strong> Private pool - Ideal for small groups and families. Capacity: 20 people.</p>
             <p><i class="fas fa-info-circle"></i> <strong>Pavilion Pool:</strong> Public pool - Larger pool for events and gatherings. Capacity: 50 people.</p>
-            <p><i class="fas fa-exclamation-triangle"></i> <strong>Note:</strong> The main pools (Ernesto and Pavilion) cannot be deleted as they are core to the system.</p>
+            <p class="warning"><i class="fas fa-exclamation-triangle"></i> <strong>Note:</strong> The main pools (Ernesto and Pavilion) cannot be deleted as they are core to the system.</p>
         </div>
     </div>
     
@@ -795,7 +1135,7 @@ if (isset($_GET['edit'])) {
     <div class="modal active" id="editPoolModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><i class="fas fa-edit"></i> Edit <?php echo htmlspecialchars($edit_pool['name']); ?> Settings</h3>
+                <h3><i class="fas fa-edit"></i> Edit <?php echo htmlspecialchars($edit_pool['name']); ?></h3>
                 <a href="pools.php" class="modal-close">&times;</a>
             </div>
             
@@ -807,14 +1147,14 @@ if (isset($_GET['edit'])) {
                     <label for="edit_name">Pool Name</label>
                     <input type="text" name="name" id="edit_name" class="form-control" 
                            value="<?php echo htmlspecialchars($edit_pool['name']); ?>" readonly>
-                    <small style="color: #666;">Pool name cannot be changed</small>
+                    <small>Pool name cannot be changed</small>
                 </div>
                 
                 <div class="form-group">
                     <label for="edit_type">Pool Type</label>
                     <select name="type" id="edit_type" class="form-control" required>
-                        <option value="private" <?php echo $edit_pool['type'] == 'private' ? 'selected' : ''; ?>>Private Pool</option>
-                        <option value="public" <?php echo $edit_pool['type'] == 'public' ? 'selected' : ''; ?>>Public Pool</option>
+                        <option value="private" <?php echo $edit_pool['type'] == 'private' ? 'selected' : ''; ?>>Private</option>
+                        <option value="public" <?php echo $edit_pool['type'] == 'public' ? 'selected' : ''; ?>>Public</option>
                     </select>
                 </div>
                 
@@ -842,11 +1182,11 @@ if (isset($_GET['edit'])) {
                 </div>
                 
                 <button type="submit" class="btn-submit">
-                    <i class="fas fa-save"></i> Update Pool Settings
+                    <i class="fas fa-save"></i> Update Pool
                 </button>
                 
                 <div style="text-align: center; margin-top: 15px;">
-                    <a href="pools.php" class="btn btn-outline">Cancel</a>
+                    <a href="pools.php" class="btn-outline">Cancel</a>
                 </div>
             </form>
         </div>

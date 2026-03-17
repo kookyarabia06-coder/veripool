@@ -2,6 +2,7 @@
 /**
  * Veripool Reservation System - Admin Reservations Page
  * Single table for all reservations with edit functionality and pending date adjustments
+ * Coastal Harmony Theme - Gray, Blue, Green - With Consistent Button Colors
  */
 
 // Enable error reporting
@@ -100,9 +101,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <style>
                     body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
                     .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                    .header { background: #dc3545; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0; }
+                    .header { background: #C53030; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0; }
                     .content { padding: 30px; background: #f9f9f9; }
-                    .reason-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; }
+                    .reason-box { background: #FEF3C7; border-left: 4px solid #ED8936; padding: 15px; margin: 20px 0; }
                 </style>
             </head>
             <body>
@@ -591,11 +592,11 @@ function getBalanceClass($balance) {
 function getFacilityIcon($type) {
     switch ($type) {
         case 'room':
-            return '<i class="fas fa-bed" style="color: #1679AB;"></i>';
+            return '<i class="fas fa-bed" style="color: #2B6F8B;"></i>';
         case 'cottage':
-            return '<i class="fas fa-home" style="color: #28a745;"></i>';
+            return '<i class="fas fa-home" style="color: #2F855A;"></i>';
         default:
-            return '<i class="fas fa-question-circle" style="color: #999;"></i>';
+            return '<i class="fas fa-question-circle" style="color: #A0AEC0;"></i>';
     }
 }
 ?>
@@ -604,27 +605,307 @@ function getFacilityIcon($type) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservations - Admin Dashboard</title>
+    <title>Reservations - Veripool Admin</title>
     <link rel="apple-touch-icon" sizes="180x180" href="/veripool/assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/veripool/assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/veripool/assets/favicon/favicon-16x16.png">
     <link rel="manifest" href="/veripool/assets/favicon/site.webmanifest">
     
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/admin.css">
-    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    
     <style>
-        /* Filter Section */
-        .filter-section {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        /* ===== COASTAL HARMONY THEME - RESERVATIONS PAGE ===== */
+        :root {
+            --gray-100: #F7FAFC;
+            --gray-200: #EDF2F7;
+            --gray-300: #E2E8F0;
+            --gray-400: #CBD5E0;
+            --gray-500: #A0AEC0;
+            --gray-600: #718096;
+            --gray-700: #4A5568;
+            --gray-800: #2D3748;
+            --gray-900: #1A202C;
+            
+            --blue-500: #2B6F8B;
+            --blue-600: #1E5770;
+            --blue-700: #143F52;
+            
+            --green-500: #2F855A;
+            --green-600: #276749;
+            --green-700: #1E4B38;
+            
+            --white: #FFFFFF;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.08);
+            
+            /* Consistent Button Colors */
+            --btn-edit: #2B6F8B;
+            --btn-edit-hover: #1E5770;
+            --btn-delete: #C53030;
+            --btn-delete-hover: #9B2C2C;
+            --btn-checkin: #2F855A;
+            --btn-checkin-hover: #276749;
+            --btn-verify: #2F855A;
+            --btn-verify-hover: #276749;
+            --btn-payment: #ED8936;
+            --btn-payment-hover: #DD6B20;
+            --btn-entrance: #9F7AEA;
+            --btn-entrance-hover: #805AD5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            overflow-x: hidden;
+        }
+        
+        /* Main Content Layout */
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--gray-100) 0%, var(--white) 100%);
+            position: relative;
+        }
+        
+        /* Decorative background elements */
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(43, 111, 139, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .main-content::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(47, 133, 90, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px 25px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .top-bar h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .top-bar h1 i {
+            color: var(--blue-500);
+            background: var(--gray-100);
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .date-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            background: var(--gray-100);
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .date-info i {
+            color: var(--blue-500);
+            margin-right: 5px;
+        }
+        
+        /* Alert Messages */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid;
+            position: relative;
+            z-index: 2;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .alert i {
+            font-size: 1.2rem;
+        }
+        
+        .alert-success {
+            border-left-color: var(--green-500);
+            color: var(--green-700);
+        }
+        
+        .alert-error {
+            border-left-color: var(--btn-delete);
+            color: var(--btn-delete);
+            background: #FFF5F5;
+            border-color: #FED7D7;
+        }
+        
+        /* Tab Navigation */
+        .tab-nav {
             display: flex;
             gap: 10px;
+            margin-bottom: 25px;
+            padding-bottom: 5px;
+            flex-wrap: wrap;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .tab-btn {
+            padding: 12px 25px;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .tab-btn:hover {
+            background: var(--gray-100);
+            border-color: var(--blue-500);
+            color: var(--blue-500);
+            transform: translateY(-2px);
+        }
+        
+        .tab-btn.active {
+            background: var(--blue-500);
+            color: white;
+            border-color: var(--blue-500);
+            box-shadow: 0 4px 10px rgba(43, 111, 139, 0.2);
+        }
+        
+        .tab-btn .badge {
+            background: var(--gray-200);
+            color: var(--gray-700);
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .tab-btn.active .badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            background: var(--white);
+            padding: 15px 20px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--gray-700);
+        }
+        
+        .stat-item i {
+            color: var(--blue-500);
+            font-size: 1rem;
+        }
+        
+        .stat-item.warning i {
+            color: var(--btn-payment);
+        }
+        
+        .stat-item.danger i {
+            color: var(--btn-delete);
+        }
+        
+        .stat-item strong {
+            color: var(--gray-900);
+            margin-right: 3px;
+            font-weight: 600;
+        }
+        
+        /* Filter Section */
+        .filter-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .filter-section form {
+            display: flex;
+            gap: 15px;
             flex-wrap: wrap;
             align-items: flex-end;
         }
@@ -636,108 +917,146 @@ function getFacilityIcon($type) {
         
         .filter-group label {
             display: block;
-            margin-bottom: 4px;
-            color: #102C57;
-            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--gray-700);
+            font-weight: 600;
             font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .filter-input {
             width: 100%;
-            padding: 6px 8px;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            padding: 8px 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(43, 111, 139, 0.1);
         }
         
         .search-group {
             flex: 2;
         }
         
-        /* Stats Bar */
-        .stats-bar {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            background: white;
-            padding: 12px 15px;
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: 'Inter', sans-serif;
         }
         
-        .stat-item {
+        .btn-primary {
+            background: var(--blue-500);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--blue-600);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--gray-700);
+            border: 2px solid var(--gray-300);
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--blue-500);
+            color: var(--blue-500);
+        }
+        
+        /* Section Header */
+        .section-header {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-bottom: 2px solid var(--blue-500);
+            padding: 15px 20px;
+            border-radius: 12px 12px 0 0;
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .section-header:first-of-type {
+            margin-top: 0;
+        }
+        
+        .section-header h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--gray-900);
+            font-size: 1.2rem;
+            margin: 0;
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.85rem;
         }
         
-        .stat-item i {
-            color: #1679AB;
+        .section-header h2 i {
+            color: var(--blue-500);
         }
         
-        .stat-item.warning i {
-            color: #ffc107;
-        }
-        
-        .stat-item.danger i {
-            color: #dc3545;
-        }
-        
-        .stat-item strong {
-            color: #102C57;
-            margin-right: 3px;
-        }
-        
-        /* Adjustment Badge */
-        .adjustment-badge {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 8px;
-            font-size: 0.65rem;
+        .section-header .badge {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
             font-weight: 600;
-            background: #FFB1B1;
-            color: #102C57;
+            border: 1px solid var(--gray-200);
         }
         
-        .adjustment-pending {
-            background: #fff3cd;
-            color: #856404;
-            animation: pulse 1.5s infinite;
+        /* Card */
+        .card {
+            background: var(--white);
+            border-radius: 0 0 12px 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            border-top: none;
+            margin-bottom: 30px;
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
         }
         
-        .adjustment-count {
-            background: #102C57;
-            color: #FFCBCB;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 0.6rem;
-            margin-left: 3px;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.7; }
-            100% { opacity: 1; }
+        .card-body {
+            padding: 20px;
         }
         
         /* Adjustment Cards */
         .adjustments-section {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
         
         .adjustment-card {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
+            background: #FEF3C7;
+            border-left: 4px solid var(--btn-payment);
+            padding: 20px;
             margin-bottom: 15px;
-            border-radius: 5px;
+            border-radius: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
+            border: 1px solid #FDE68A;
         }
         
         .adjustment-info {
@@ -745,9 +1064,41 @@ function getFacilityIcon($type) {
         }
         
         .adjustment-info h4 {
-            color: #856404;
-            margin-bottom: 5px;
-            font-size: 0.95rem;
+            color: #92400E;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .adjustment-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            background: var(--btn-payment);
+            color: white;
+        }
+        
+        .adjustment-pending {
+            animation: pulse 1.5s infinite;
+        }
+        
+        .adjustment-count {
+            background: var(--gray-900);
+            color: var(--gray-100);
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            margin-left: 5px;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
         }
         
         .adjustment-dates {
@@ -759,37 +1110,40 @@ function getFacilityIcon($type) {
         
         .date-box {
             background: white;
-            padding: 8px 12px;
-            border-radius: 5px;
+            padding: 8px 15px;
+            border-radius: 8px;
             font-size: 0.85rem;
+            border: 1px solid var(--gray-200);
         }
         
         .date-box.original {
-            border-left: 3px solid #dc3545;
+            border-left: 3px solid var(--btn-delete);
         }
         
         .date-box.requested {
-            border-left: 3px solid #28a745;
+            border-left: 3px solid var(--green-500);
         }
         
         .date-label {
             font-size: 0.7rem;
-            color: #666;
+            color: var(--gray-600);
+            margin-bottom: 3px;
         }
         
         .date-value {
-            font-weight: bold;
-            color: #102C57;
+            font-weight: 600;
+            color: var(--gray-900);
         }
         
         .adjustment-reason {
             background: white;
-            padding: 8px;
-            border-radius: 5px;
+            padding: 10px 15px;
+            border-radius: 8px;
             font-style: italic;
-            color: #666;
+            color: var(--gray-700);
             font-size: 0.85rem;
-            margin-top: 8px;
+            margin-top: 10px;
+            border: 1px solid var(--gray-200);
         }
         
         .adjustment-actions {
@@ -798,103 +1152,43 @@ function getFacilityIcon($type) {
         }
         
         .btn-approve {
-            background: #28a745;
+            background: var(--green-500);
             color: white;
             border: none;
             padding: 8px 20px;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
         
         .btn-approve:hover {
-            background: #218838;
+            background: var(--green-600);
             transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
         
         .btn-reject {
-            background: #dc3545;
+            background: var(--btn-delete);
             color: white;
             border: none;
             padding: 8px 20px;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
         
         .btn-reject:hover {
-            background: #c82333;
+            background: var(--btn-delete-hover);
             transform: translateY(-2px);
-        }
-        
-        /* Entrance Fee Badge */
-        .entrance-badge {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 8px;
-            font-size: 0.6rem;
-            font-weight: 600;
-            background: #FFB1B1;
-            color: #102C57;
-        }
-        
-        .entrance-badge.paid {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .entrance-badge.unpaid {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        /* Section Header */
-        .section-header {
-            background: #102C57;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px 8px 0 0;
-            margin-top: 25px;
-            margin-bottom: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .section-header:first-of-type {
-            margin-top: 0;
-        }
-        
-        .section-header h2 {
-            color: #FFCBCB;
-            font-size: 1.1rem;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .section-header .badge {
-            background: #FFB1B1;
-            color: #102C57;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-        }
-        
-        /* Card */
-        .card {
-            background: white;
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            overflow: hidden;
-        }
-        
-        .card-body {
-            padding: 15px;
+            box-shadow: var(--shadow-sm);
         }
         
         /* Tables */
@@ -905,45 +1199,49 @@ function getFacilityIcon($type) {
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
         }
         
-        th {
+        table th {
             text-align: left;
-            padding: 8px 5px;
-            background: #f8f9fa;
-            color: #102C57;
+            padding: 12px 8px;
+            background: var(--gray-100);
+            color: var(--gray-700);
             font-weight: 600;
-            border-bottom: 2px solid #FFCBCB;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--gray-200);
             white-space: nowrap;
         }
         
-        td {
-            padding: 8px 5px;
-            border-bottom: 1px solid #e9ecef;
+        table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid var(--gray-200);
             vertical-align: middle;
+            color: var(--gray-700);
         }
         
-        tr:hover td {
-            background: #f8f9fa;
+        table tr:hover td {
+            background: var(--gray-100);
         }
         
         /* Type Badge */
         .type-badge {
             display: inline-block;
-            padding: 2px 6px;
-            border-radius: 8px;
+            padding: 3px 8px;
+            border-radius: 30px;
             font-size: 0.6rem;
             font-weight: 600;
         }
         
         .type-online {
-            background: #1679AB;
+            background: var(--blue-500);
             color: white;
         }
         
         .type-walkin {
-            background: #28a745;
+            background: var(--green-500);
             color: white;
         }
         
@@ -951,81 +1249,106 @@ function getFacilityIcon($type) {
         .facility-info {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
         }
         
         .facility-icon {
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: var(--gray-100);
+            border-radius: 8px;
+            border: 1px solid var(--gray-200);
         }
         
         .facility-name {
             font-weight: 600;
+            color: var(--gray-900);
         }
         
         .facility-type {
             font-size: 0.6rem;
-            color: #666;
+            color: var(--gray-600);
             margin-top: 2px;
         }
         
         /* Status Badges */
         .status-badge {
             display: inline-block;
-            padding: 3px 6px;
-            border-radius: 10px;
+            padding: 4px 10px;
+            border-radius: 30px;
             font-size: 0.65rem;
-            font-weight: 500;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
-        .status-pending { background: #fff3cd; color: #856404; }
-        .status-confirmed { background: #d4edda; color: #155724; }
-        .status-checked_in { background: #cce5ff; color: #004085; }
-        .status-checked_out { background: #e2e3e5; color: #383d41; }
-        .status-cancelled { background: #f8d7da; color: #721c24; }
+        .status-pending { 
+            background: #FEF3C7; 
+            color: #92400E; 
+        }
+        .status-confirmed { 
+            background: #DEF7EC; 
+            color: var(--green-700); 
+        }
+        .status-checked_in { 
+            background: #E1EFFE; 
+            color: var(--blue-700); 
+        }
+        .status-checked_out { 
+            background: var(--gray-200); 
+            color: var(--gray-700); 
+        }
+        .status-cancelled { 
+            background: #FEE2E2; 
+            color: var(--btn-delete); 
+        }
         
         /* Balance Display */
         .balance-positive {
-            color: #dc3545;
-            font-weight: bold;
+            color: var(--btn-delete);
+            font-weight: 600;
         }
         
         .balance-zero {
-            color: #28a745;
-            font-weight: bold;
+            color: var(--green-600);
+            font-weight: 600;
         }
         
         /* Payment Breakdown */
         .payment-breakdown {
             font-size: 0.65rem;
-            color: #666;
-            margin-top: 2px;
+            color: var(--gray-500);
+            margin-top: 3px;
         }
         
         /* OTP Code */
         .otp-code {
             font-family: monospace;
             font-size: 0.8rem;
-            font-weight: bold;
-            color: #1679AB;
+            font-weight: 600;
+            color: var(--blue-500);
             cursor: pointer;
+            background: var(--gray-100);
+            padding: 2px 6px;
+            border-radius: 4px;
         }
         
         .otp-code:hover {
+            background: var(--gray-200);
             text-decoration: underline;
         }
         
         /* Guest Count */
         .guest-count {
             font-size: 0.65rem;
-            color: #666;
-            margin-top: 2px;
+            color: var(--gray-600);
+            margin-top: 3px;
         }
         
-        /* Action Buttons */
+        /* Action Buttons - CONSISTENT COLORS */
         .action-buttons {
             display: flex;
             gap: 3px;
@@ -1033,58 +1356,132 @@ function getFacilityIcon($type) {
         }
         
         .btn-icon {
-            padding: 4px 6px;
+            padding: 5px 8px;
             border: none;
-            border-radius: 3px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.65rem;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 3px;
+            font-weight: 500;
         }
         
         .btn-icon:hover {
-            transform: translateY(-1px);
-            filter: brightness(0.95);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
         
-        .btn-edit { background: #17a2b8; color: white; }
-        .btn-checkin { background: #28a745; color: white; }
-        .btn-verify { background: #17a2b8; color: white; }
-        .btn-delete { background: #dc3545; color: white; }
-        .btn-payment { background: #ffc107; color: #102C57; }
-        .btn-entrance { background: #FFB1B1; color: #102C57; }
-        .btn-adjustment { background: #ffc107; color: #102C57; }
+        /* Edit Button - Blue */
+        .btn-edit { 
+            background: var(--btn-edit); 
+            color: white; 
+        }
+        .btn-edit:hover {
+            background: var(--btn-edit-hover);
+        }
+        
+        /* Check-in Button - Green */
+        .btn-checkin { 
+            background: var(--btn-checkin); 
+            color: white; 
+        }
+        .btn-checkin:hover {
+            background: var(--btn-checkin-hover);
+        }
+        
+        /* Verify Button - Green (same as check-in) */
+        .btn-verify { 
+            background: var(--btn-verify); 
+            color: white; 
+        }
+        .btn-verify:hover {
+            background: var(--btn-verify-hover);
+        }
+        
+        /* Delete Button - Red */
+        .btn-delete { 
+            background: var(--btn-delete); 
+            color: white; 
+        }
+        .btn-delete:hover {
+            background: var(--btn-delete-hover);
+        }
+        
+        /* Payment Button - Orange */
+        .btn-payment { 
+            background: var(--btn-payment); 
+            color: white; 
+        }
+        .btn-payment:hover {
+            background: var(--btn-payment-hover);
+        }
+        
+        /* Entrance Button - Purple */
+        .btn-entrance { 
+            background: var(--btn-entrance); 
+            color: white; 
+        }
+        .btn-entrance:hover {
+            background: var(--btn-entrance-hover);
+        }
         
         .select-status {
-            padding: 3px;
+            padding: 5px 8px;
             font-size: 0.65rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 3px;
-            width: 65px;
+            border: 2px solid var(--gray-200);
+            border-radius: 6px;
+            width: 80px;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
         }
         
-        /* Payment Indicator */
+        .select-status:focus {
+            outline: none;
+            border-color: var(--blue-500);
+        }
+        
+        /* Screenshot Thumb */
         .screenshot-thumb {
-            width: 30px;
-            height: 30px;
-            background: #f0f0f0;
-            border-radius: 4px;
+            width: 32px;
+            height: 32px;
+            background: var(--gray-100);
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            border: 1px solid #ddd;
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s ease;
+        }
+        
+        .screenshot-thumb:hover {
+            background: var(--gray-200);
+            transform: scale(1.1);
         }
         
         .screenshot-thumb i {
             font-size: 1rem;
-            color: #1679AB;
+            color: var(--blue-500);
         }
         
-        /* Edit Modal */
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray-500);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--gray-300);
+            margin-bottom: 15px;
+        }
+        
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -1092,10 +1489,11 @@ function getFacilityIcon($type) {
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(3px);
         }
         
         .modal.active {
@@ -1103,56 +1501,86 @@ function getFacilityIcon($type) {
         }
         
         .modal-content {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 20px;
             max-width: 600px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
         }
         
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #FFCBCB;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gray-200);
         }
         
         .modal-header h3 {
-            color: #102C57;
-            font-size: 1.1rem;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--gray-900);
+            font-size: 1.2rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modal-header h3 i {
+            color: var(--blue-500);
         }
         
         .modal-close {
             background: none;
             border: none;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             cursor: pointer;
-            color: #666;
-            text-decoration: none;
+            color: var(--gray-500);
+            transition: color 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            color: var(--btn-delete);
         }
         
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 5px;
-            color: #102C57;
-            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--gray-700);
+            font-weight: 600;
             font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .form-control {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            font-size: 0.85rem;
+            padding: 10px 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(43, 111, 139, 0.1);
+        }
+        
+        .form-control[readonly] {
+            background: var(--gray-100);
+            color: var(--gray-600);
         }
         
         .form-row {
@@ -1166,99 +1594,51 @@ function getFacilityIcon($type) {
         }
         
         .guest-info {
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            font-size: 0.85rem;
+            background: var(--gray-100);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .guest-info p {
+            margin: 5px 0;
         }
         
         .btn-submit {
             width: 100%;
-            padding: 10px;
-            background: #1679AB;
+            padding: 12px;
+            background: var(--blue-500);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
         }
         
         .btn-submit:hover {
-            background: #102C57;
+            background: var(--blue-600);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
         
         /* Staff Notice */
         .staff-notice {
-            background: #cce5ff;
-            color: #004085;
-            padding: 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            margin-bottom: 10px;
-            border-left: 4px solid #004085;
-        }
-        
-        /* Tab Navigation */
-        .tab-nav {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            border-bottom: 2px solid #FFCBCB;
-            padding-bottom: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        
-        .tab-btn {
-            padding: 10px 25px;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #102C57;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        
-        .tab-btn:hover {
-            background: #FFCBCB;
-            border-color: #FFB1B1;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(255,203,203,0.3);
-        }
-        
-        .tab-btn.active {
-            background: #1679AB;
-            color: white;
-            border-color: #1679AB;
-            box-shadow: 0 4px 10px rgba(22,121,171,0.3);
-        }
-        
-        .tab-btn .badge {
-            background: #ffc107;
-            color: #102C57;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            margin-left: 5px;
-        }
-        
-        .tab-btn.active .badge {
-            background: white;
-            color: #1679AB;
+            background: #E1EFFE;
+            color: var(--blue-700);
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--blue-500);
         }
         
         /* Responsive */
-        @media (max-width: 1024px) {
-            .filter-section {
+        @media (max-width: 1200px) {
+            .filter-section form {
                 flex-direction: column;
             }
             
@@ -1279,6 +1659,10 @@ function getFacilityIcon($type) {
             .adjustment-actions {
                 justify-content: flex-end;
             }
+            
+            .form-row {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -1289,19 +1673,19 @@ function getFacilityIcon($type) {
     <!-- Main Content -->
     <div class="main-content">
         <!-- Top Bar -->
-        <div class="top-bar" style="padding: 12px 20px; margin-bottom: 20px;">
-            <h1 style="font-size: 1.4rem;">
+        <div class="top-bar">
+            <h1>
                 <i class="fas fa-calendar-check"></i>
                 Reservations
             </h1>
-            <div class="date" style="font-size: 0.8rem;">
-                <i class="far fa-calendar-alt"></i> <?php echo date('l, F d, Y'); ?>
-                <span style="margin-left: 10px;"><i class="far fa-clock"></i> <?php echo date('h:i A'); ?></span>
+            <div class="date-info">
+                <span><i class="far fa-calendar-alt"></i> <?php echo date('l, F d, Y'); ?></span>
+                <span><i class="far fa-clock"></i> <?php echo date('h:i A'); ?></span>
             </div>
         </div>
         
         <?php if ($message): ?>
-            <div class="alert alert-<?php echo $message_type; ?>" style="padding: 8px 12px; font-size: 0.8rem; margin-bottom: 15px;">
+            <div class="alert alert-<?php echo $message_type; ?>">
                 <i class="fas fa-<?php echo $message_type === 'success' ? 'check-circle' : 'exclamation-circle'; ?>"></i>
                 <?php echo htmlspecialchars($message); ?>
             </div>
@@ -1347,7 +1731,7 @@ function getFacilityIcon($type) {
         
         <!-- Filter Section -->
         <div class="filter-section">
-            <form method="GET" style="display: flex; gap: 8px; flex-wrap: wrap; width: 100%;">
+            <form method="GET">
                 <div class="filter-group">
                     <label>Status</label>
                     <select name="status" class="filter-input">
@@ -1372,8 +1756,8 @@ function getFacilityIcon($type) {
                     <input type="text" name="search" class="filter-input" placeholder="Name, email, phone, reservation #" value="<?php echo htmlspecialchars($search); ?>">
                 </div>
                 <div class="filter-group" style="display: flex; gap: 5px;">
-                    <button type="submit" class="btn btn-primary" style="padding: 5px 10px; font-size: 0.75rem;">Apply</button>
-                    <a href="reservations.php" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.75rem;">Clear</a>
+                    <button type="submit" class="btn btn-primary">Apply</button>
+                    <a href="reservations.php" class="btn btn-outline">Clear</a>
                 </div>
             </form>
         </div>
@@ -1381,11 +1765,11 @@ function getFacilityIcon($type) {
         <!-- PENDING ADJUSTMENT REQUESTS SECTION -->
         <?php if (!empty($pending_adjustments)): ?>
         <div class="adjustments-section">
-            <div class="section-header" style="background: #ffc107; color: #102C57;">
-                <h2 style="color: #102C57;">
+            <div class="section-header">
+                <h2>
                     <i class="fas fa-calendar-alt"></i> Pending Date Adjustment Requests
                 </h2>
-                <span class="badge" style="background: #102C57; color: white;"><?php echo count($pending_adjustments); ?> pending</span>
+                <span class="badge"><?php echo count($pending_adjustments); ?> pending</span>
             </div>
             
             <div class="card">
@@ -1395,11 +1779,11 @@ function getFacilityIcon($type) {
                         <div class="adjustment-info">
                             <h4>
                                 <?php echo htmlspecialchars($adj['guest_name']); ?> 
-                                <small style="font-weight: normal; color: #666;">(<?php echo $adj['guest_email']; ?>)</small>
+                                <small style="font-weight: normal; color: var(--gray-600);">(<?php echo $adj['guest_email']; ?>)</small>
                                 <span class="adjustment-badge adjustment-pending">Pending Review</span>
                             </h4>
                             
-                            <p style="margin: 5px 0; font-size: 0.85rem;">
+                            <p style="margin: 5px 0; font-size: 0.85rem; color: var(--gray-700);">
                                 <strong>Reservation:</strong> <?php echo $adj['reservation_number']; ?> | 
                                 <strong>Facility:</strong> <?php echo $adj['facility_name']; ?> |
                                 <strong>OTP:</strong> <span class="otp-code" onclick="copyOTP('<?php echo $adj['otp_code']; ?>')"><?php echo $adj['otp_code']; ?></span>
@@ -1427,13 +1811,13 @@ function getFacilityIcon($type) {
                             
                             <?php if (!empty($adj['reason'])): ?>
                             <div class="adjustment-reason">
-                                <i class="fas fa-quote-left" style="color: #999; font-size: 0.7rem;"></i>
+                                <i class="fas fa-quote-left" style="color: var(--gray-400); font-size: 0.7rem;"></i>
                                 <?php echo htmlspecialchars($adj['reason']); ?>
-                                <i class="fas fa-quote-right" style="color: #999; font-size: 0.7rem;"></i>
+                                <i class="fas fa-quote-right" style="color: var(--gray-400); font-size: 0.7rem;"></i>
                             </div>
                             <?php endif; ?>
                             
-                            <p style="margin-top: 5px; font-size: 0.7rem; color: #999;">
+                            <p style="margin-top: 5px; font-size: 0.7rem; color: var(--gray-500);">
                                 Requested: <?php echo date('M d, Y h:i A', strtotime($adj['created_at'])); ?>
                             </p>
                         </div>
@@ -1469,7 +1853,11 @@ function getFacilityIcon($type) {
         <div class="card">
             <div class="card-body">
                 <?php if (empty($reservations)): ?>
-                    <div style="text-align: center; padding: 30px; color: #666;">No reservations found.</div>
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-times"></i>
+                        <h3>No Reservations Found</h3>
+                        <p>No reservations match your filter criteria.</p>
+                    </div>
                 <?php else: ?>
                     <div class="table-responsive">
                         <table>
@@ -1508,7 +1896,7 @@ function getFacilityIcon($type) {
                                     </td>
                                     <td>
                                         <?php echo htmlspecialchars($res['guest_name']); ?>
-                                        <br><small style="color: #666;"><?php echo $res['guest_phone']; ?></small>
+                                        <br><small style="color: var(--gray-600);"><?php echo $res['guest_phone']; ?></small>
                                     </td>
                                     <td>
                                         <div class="facility-info">
@@ -1537,15 +1925,15 @@ function getFacilityIcon($type) {
                                     <td class="<?php echo $balance_class; ?>">
                                         ₱<?php echo number_format($balance, 0); ?>
                                         <?php if ($balance <= 0): ?>
-                                            <br><small style="color: #28a745;">FULLY PAID</small>
+                                            <br><small style="color: var(--green-600);">FULLY PAID</small>
                                         <?php endif; ?>
                                     </td>
                                     <td>
                                         <span class="<?php echo $entrance_class; ?>">
                                             <?php if ($entrance_balance <= 0): ?>
-                                                <i class="fas fa-check-circle" style="color: #28a745;"></i> Paid
+                                                <i class="fas fa-check-circle" style="color: var(--green-500);"></i> Paid
                                             <?php else: ?>
-                                                <i class="fas fa-exclamation-circle" style="color: #dc3545;"></i> ₱<?php echo number_format($entrance_balance, 0); ?>
+                                                <i class="fas fa-exclamation-circle" style="color: var(--btn-delete);"></i> ₱<?php echo number_format($entrance_balance, 0); ?>
                                             <?php endif; ?>
                                         </span>
                                         <br><small class="guest-count"><?php echo $res['total_guests']; ?> guests</small>
@@ -1561,9 +1949,9 @@ function getFacilityIcon($type) {
                                                 <i class="fas fa-image"></i>
                                             </div>
                                         <?php elseif ($res['pending_payments'] > 0): ?>
-                                            <span style="color: #ffc107;">Pending</span>
+                                            <span style="color: var(--btn-payment);">Pending</span>
                                         <?php else: ?>
-                                            <span style="color: #999;">-</span>
+                                            <span style="color: var(--gray-400);">-</span>
                                         <?php endif; ?>
                                     </td>
                                     <td>
@@ -1572,7 +1960,7 @@ function getFacilityIcon($type) {
                                                 <?php echo $res['otp_code']; ?>
                                             </span>
                                             <?php if ($res['date_adjustments'] > 0): ?>
-                                                <br><small style="color: #28a745;">
+                                                <br><small style="color: var(--green-600);">
                                                     <i class="fas fa-sync-alt"></i> Adj: <?php echo $res['date_adjustments']; ?>/2
                                                 </small>
                                             <?php endif; ?>
@@ -1580,13 +1968,13 @@ function getFacilityIcon($type) {
                                                 <br><span class="adjustment-badge adjustment-pending">Pending</span>
                                             <?php endif; ?>
                                         <?php else: ?>
-                                            <span style="color: #999;">-</span>
+                                            <span style="color: var(--gray-400);">-</span>
                                         <?php endif; ?>
                                     </td>
                                     <td>
                                         <div class="action-buttons">
                                             <a href="?edit=<?php echo $res['id']; ?>&status=<?php echo $status_filter; ?>&date_from=<?php echo $date_from; ?>&date_to=<?php echo $date_to; ?>&search=<?php echo urlencode($search); ?>" class="btn-icon btn-edit" title="Edit Reservation">
-                                                <i class="fas fa-edit"></i>
+                                                <i class="fas fa-edit"></i> Edit
                                             </a>
                                             
                                             <form method="POST" style="display: inline;">
@@ -1603,19 +1991,19 @@ function getFacilityIcon($type) {
                                             
                                             <?php if ($res['status'] == 'confirmed' && !empty($res['otp_code']) && $entrance_balance <= 0): ?>
                                                 <button onclick="showOTPVerification(<?php echo $res['id']; ?>, '<?php echo $res['reservation_number']; ?>', '<?php echo addslashes($res['guest_name']); ?>')" class="btn-icon btn-verify" title="Verify OTP">
-                                                    <i class="fas fa-key"></i>
+                                                    <i class="fas fa-key"></i> OTP
                                                 </button>
                                             <?php endif; ?>
                                             
                                             <?php if ($res['pending_payments'] > 0): ?>
                                                 <a href="verify-payments.php?reservation=<?php echo $res['id']; ?>" class="btn-icon btn-payment" title="Verify Payment">
-                                                    <i class="fas fa-credit-card"></i>
+                                                    <i class="fas fa-credit-card"></i> Pay
                                                 </a>
                                             <?php endif; ?>
                                             
                                             <?php if ($entrance_balance > 0): ?>
                                                 <a href="verify-payments.php#entrance-fees" class="btn-icon btn-entrance" title="Entrance Fee Pending">
-                                                    <i class="fas fa-ticket-alt"></i>
+                                                    <i class="fas fa-ticket-alt"></i> Fee
                                                 </a>
                                             <?php endif; ?>
                                         </div>
@@ -1773,7 +2161,7 @@ function getFacilityIcon($type) {
                     <input type="text" name="otp_code" id="otp_code" class="form-control" placeholder="6-digit OTP" maxlength="6" required>
                 </div>
                 
-                <button type="submit" class="btn-submit" style="background: #28a745;">
+                <button type="submit" class="btn-submit" style="background: var(--green-500);">
                     <i class="fas fa-check-circle"></i> Verify & Check In
                 </button>
             </form>
@@ -1784,7 +2172,7 @@ function getFacilityIcon($type) {
     <div class="modal" id="rejectModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Reject Date Adjustment</h3>
+                <h3><i class="fas fa-times-circle" style="color: var(--btn-delete);"></i> Reject Date Adjustment</h3>
                 <button class="modal-close" onclick="closeRejectModal()">&times;</button>
             </div>
             <form method="POST" id="rejectForm">
@@ -1792,7 +2180,7 @@ function getFacilityIcon($type) {
                 <input type="hidden" name="request_id" id="reject_request_id">
                 
                 <div class="modal-body">
-                    <p id="rejectGuestInfo"></p>
+                    <p id="rejectGuestInfo" style="margin-bottom: 15px; color: var(--gray-700);"></p>
                     <div class="form-group">
                         <label>Reason for Rejection</label>
                         <textarea name="rejection_reason" rows="4" class="form-control" placeholder="Please explain why this adjustment request is being rejected..." required></textarea>
@@ -1800,8 +2188,8 @@ function getFacilityIcon($type) {
                 </div>
                 
                 <div class="form-group" style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button type="button" class="btn-submit" style="background: #6c757d;" onclick="closeRejectModal()">Cancel</button>
-                    <button type="submit" class="btn-submit" style="background: #dc3545;">
+                    <button type="button" class="btn-submit" style="background: var(--gray-500);" onclick="closeRejectModal()">Cancel</button>
+                    <button type="submit" class="btn-submit" style="background: var(--btn-delete);">
                         <i class="fas fa-times"></i> Reject Request
                     </button>
                 </div>
@@ -1818,12 +2206,12 @@ function getFacilityIcon($type) {
             </div>
             
             <div id="screenshotContainer" style="text-align: center; margin-bottom: 15px;">
-                <img id="screenshotImage" class="screenshot-image" src="" alt="Payment Screenshot" style="max-width: 100%; max-height: 300px;">
+                <img id="screenshotImage" class="screenshot-image" src="" alt="Payment Screenshot" style="max-width: 100%; max-height: 300px; border-radius: 8px;">
             </div>
             
             <div id="paymentDetails" class="guest-info"></div>
             
-            <a href="verify-payments.php" class="btn-submit" style="text-align: center; text-decoration: none; display: block; background: #17a2b8;">
+            <a href="verify-payments.php" class="btn-submit" style="text-align: center; text-decoration: none; display: block; background: var(--blue-500);">
                 Go to Verify Payments
             </a>
         </div>

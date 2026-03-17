@@ -2,6 +2,7 @@
 /**
  * Veripool Reservation System - Admin Cottages Page
  * Manage all cottages
+ * Coastal Harmony Theme - Gray, Blue, Green
  */
 
 // Enable error reporting
@@ -164,68 +165,299 @@ if (isset($_GET['edit'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cottages Management - Admin Dashboard</title>
+    <title>Cottages Management - Veripool Admin</title>
     <!-- POP UP ICON -->
     <link rel="apple-touch-icon" sizes="180x180" href="/veripool/assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/veripool/assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/veripool/assets/favicon/favicon-16x16.png">
     <link rel="manifest" href="/veripool/assets/favicon/site.webmanifest">
 
-   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/admin.css">
-    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    
     <style>
-        .cottage-stats {
+        /* ===== COASTAL HARMONY THEME - COTTAGES PAGE ===== */
+        :root {
+            --gray-100: #F7FAFC;
+            --gray-200: #EDF2F7;
+            --gray-300: #E2E8F0;
+            --gray-400: #CBD5E0;
+            --gray-500: #A0AEC0;
+            --gray-600: #718096;
+            --gray-700: #4A5568;
+            --gray-800: #2D3748;
+            --gray-900: #1A202C;
+            
+            --blue-500: #2B6F8B;
+            --blue-600: #1E5770;
+            --blue-700: #143F52;
+            
+            --green-500: #2F855A;
+            --green-600: #276749;
+            --green-700: #1E4B38;
+            
+            --white: #FFFFFF;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            overflow-x: hidden;
+        }
+        
+        /* Main Content Layout */
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--gray-100) 0%, var(--white) 100%);
+            position: relative;
+        }
+        
+        /* Decorative background elements */
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(43, 111, 139, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .main-content::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(47, 133, 90, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px 25px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .top-bar h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .top-bar h1 i {
+            color: var(--blue-500);
+            background: var(--gray-100);
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .date-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            background: var(--gray-100);
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .date-info i {
+            color: var(--blue-500);
+            margin-right: 5px;
+        }
+        
+        /* Alert Messages */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid;
+            position: relative;
+            z-index: 2;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .alert i {
+            font-size: 1.2rem;
+        }
+        
+        .alert-success {
+            border-left-color: var(--green-500);
+            color: var(--green-700);
+        }
+        
+        .alert-error {
+            border-left-color: #C53030;
+            color: #C53030;
+            background: #FFF5F5;
+            border-color: #FED7D7;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
         }
         
-        .cottage-stat-card {
-            background: white;
+        .stat-card {
+            background: var(--white);
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border-left: 4px solid #1679AB;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            border-top: 4px solid var(--blue-500);
+            transition: all 0.3s ease;
         }
         
-        .cottage-stat-card .number {
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .stat-card .number {
             font-size: 2rem;
-            font-weight: bold;
-            color: #102C57;
+            font-weight: 700;
+            color: var(--gray-900);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.2;
         }
         
-        .cottage-stat-card .label {
-            color: #666;
-            font-size: 0.9rem;
+        .stat-card .label {
+            color: var(--gray-600);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .quick-action {
+            background: var(--white);
+            padding: 12px 25px;
+            border-radius: 40px;
+            text-decoration: none;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-200);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+        }
+        
+        .quick-action:hover {
+            border-color: var(--blue-500);
+            color: var(--blue-500);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .quick-action i {
+            color: var(--blue-500);
+        }
+        
+        .quick-action.primary {
+            background: var(--blue-500);
+            color: white;
+            border-color: var(--blue-500);
+        }
+        
+        .quick-action.primary i {
+            color: white;
+        }
+        
+        .quick-action.primary:hover {
+            background: var(--blue-600);
+        }
+        
+        /* Cottages Grid */
         .cottage-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 20px;
             margin-top: 20px;
+            position: relative;
+            z-index: 2;
         }
         
         .cottage-card {
-            background: white;
-            border-radius: 10px;
+            background: var(--white);
+            border-radius: 16px;
             padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border-left: 4px solid #1679AB;
-            transition: transform 0.3s;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            border-left: 4px solid var(--blue-500);
+            transition: all 0.3s ease;
         }
         
         .cottage-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(22,121,171,0.1);
+            box-shadow: var(--shadow-lg);
         }
         
-        .cottage-card.available { border-left-color: #28a745; }
-        .cottage-card.occupied { border-left-color: #dc3545; }
-        .cottage-card.unavailable { border-left-color: #ffc107; }
+        .cottage-card.available { border-left-color: var(--green-500); }
+        .cottage-card.occupied { border-left-color: #C53030; }
+        .cottage-card.unavailable { border-left-color: #ED8936; }
         
         .cottage-header {
             display: flex;
@@ -236,47 +468,135 @@ if (isset($_GET['edit'])) {
         
         .cottage-name {
             font-size: 1.5rem;
-            font-weight: bold;
-            color: #102C57;
+            font-weight: 700;
+            color: var(--gray-900);
+            font-family: 'Montserrat', sans-serif;
         }
         
         .cottage-type-badge {
-            background: #FFCBCB;
-            color: #102C57;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1px solid var(--gray-200);
         }
         
         .cottage-price {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #1679AB;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--blue-500);
             margin: 10px 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .cottage-price small {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--gray-500);
         }
         
         .cottage-detail {
             margin: 8px 0;
-            color: #666;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
         }
         
         .cottage-detail i {
             width: 20px;
-            color: #1679AB;
+            color: var(--blue-500);
         }
         
         .status-badge {
             display: inline-block;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
-        .status-available { background: #d4edda; color: #155724; }
-        .status-occupied { background: #f8d7da; color: #721c24; }
-        .status-unavailable { background: #fff3cd; color: #856404; }
+        .status-available { 
+            background: #DEF7EC; 
+            color: var(--green-700); 
+        }
+        .status-occupied { 
+            background: #FEE2E2; 
+            color: #B91C1C; 
+        }
+        .status-unavailable { 
+            background: #FEF3C7; 
+            color: #92400E; 
+        }
         
+        .amenities-list {
+            background: var(--gray-100);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--gray-700);
+            margin: 15px 0;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .amenities-list i {
+            color: var(--blue-500);
+            margin-right: 5px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .btn-icon {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        .btn-icon:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-edit { 
+            background: var(--blue-500); 
+            color: white; 
+        }
+        .btn-edit:hover {
+            background: var(--blue-600);
+        }
+        
+        .btn-delete { 
+            background: #C53030; 
+            color: white; 
+        }
+        .btn-delete:hover {
+            background: #9B2C2C;
+        }
+        
+        .btn-delete:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -284,10 +604,11 @@ if (isset($_GET['edit'])) {
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(3px);
         }
         
         .modal.active {
@@ -295,13 +616,15 @@ if (isset($_GET['edit'])) {
         }
         
         .modal-content {
-            background: white;
+            background: var(--white);
             padding: 30px;
-            border-radius: 15px;
-            max-width: 600px;
+            border-radius: 20px;
+            max-width: 700px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
         }
         
         .modal-header {
@@ -309,12 +632,22 @@ if (isset($_GET['edit'])) {
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #FFCBCB;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gray-200);
         }
         
         .modal-header h3 {
-            color: #102C57;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--gray-900);
+            font-size: 1.2rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modal-header h3 i {
+            color: var(--blue-500);
         }
         
         .modal-close {
@@ -322,11 +655,12 @@ if (isset($_GET['edit'])) {
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: #666;
+            color: var(--gray-500);
+            transition: color 0.3s ease;
         }
         
         .modal-close:hover {
-            color: #dc3545;
+            color: #C53030;
         }
         
         .form-row {
@@ -337,88 +671,125 @@ if (isset($_GET['edit'])) {
         }
         
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 5px;
-            color: #102C57;
-            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .form-control {
             width: 100%;
-            padding: 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 5px;
+            padding: 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
         }
         
         .form-control:focus {
-            border-color: #1679AB;
             outline: none;
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(43, 111, 139, 0.1);
         }
         
         .btn-submit {
-            background: #1679AB;
+            background: var(--blue-500);
             color: white;
-            padding: 12px 25px;
+            padding: 14px 25px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
             width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         
         .btn-submit:hover {
-            background: #102C57;
+            background: var(--blue-600);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
         
-        .action-buttons {
-            display: flex;
-            gap: 5px;
-            margin-top: 15px;
-        }
-        
-        .btn-icon {
-            padding: 5px 15px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 0.85rem;
-        }
-        
-        .btn-edit { background: #17a2b8; color: white; }
-        .btn-delete { background: #dc3545; color: white; }
-        
-        .amenities-list {
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 5px;
+        .btn-outline {
+            background: transparent;
+            color: var(--gray-700);
+            border: 2px solid var(--gray-300);
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
             font-size: 0.9rem;
-            margin: 10px 0;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--blue-500);
+            color: var(--blue-500);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray-500);
+            grid-column: 1 / -1;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--gray-300);
+            margin-bottom: 15px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
         
         @media (max-width: 768px) {
-            .cottage-stats {
-                grid-template-columns: 1fr 1fr;
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
             
             .form-row {
                 grid-template-columns: 1fr;
             }
+            
+            .cottage-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .quick-actions {
+                flex-direction: column;
+            }
+            
+            .quick-action {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-     <?php include '../includes/sidebar.php'; ?>
-    <!-- Mobile Menu Toggle -->
-    <button class="menu-toggle" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i> Menu
-    </button>
-    
-
-    
+    <!-- Include Sidebar -->
+    <?php include BASE_PATH . '/includes/sidebar.php'; ?>
     
     <!-- Main Content -->
     <div class="main-content">
@@ -428,8 +799,8 @@ if (isset($_GET['edit'])) {
                 <i class="fas fa-home"></i>
                 Cottages Management
             </h1>
-            <div class="date">
-                <i class="far fa-calendar-alt"></i> <?php echo date('l, F d, Y'); ?>
+            <div class="date-info">
+                <span><i class="far fa-calendar-alt"></i> <?php echo date('l, F d, Y'); ?></span>
             </div>
         </div>
         
@@ -440,21 +811,21 @@ if (isset($_GET['edit'])) {
             </div>
         <?php endif; ?>
         
-        <!-- Cottage Statistics -->
-        <div class="cottage-stats">
-            <div class="cottage-stat-card">
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
                 <div class="number"><?php echo $total_cottages; ?></div>
                 <div class="label">Total Cottages</div>
             </div>
-            <div class="cottage-stat-card">
+            <div class="stat-card" style="border-top-color: var(--green-500);">
                 <div class="number"><?php echo $available_cottages; ?></div>
                 <div class="label">Available</div>
             </div>
-            <div class="cottage-stat-card">
+            <div class="stat-card" style="border-top-color: #C53030;">
                 <div class="number"><?php echo $occupied_cottages; ?></div>
                 <div class="label">Occupied</div>
             </div>
-            <div class="cottage-stat-card">
+            <div class="stat-card" style="border-top-color: #ED8936;">
                 <div class="number"><?php echo $maintenance_cottages; ?></div>
                 <div class="label">Maintenance</div>
             </div>
@@ -462,7 +833,7 @@ if (isset($_GET['edit'])) {
         
         <!-- Quick Actions -->
         <div class="quick-actions">
-            <a href="#" onclick="openAddCottageModal()" class="quick-action">
+            <a href="#" onclick="openAddCottageModal()" class="quick-action primary">
                 <i class="fas fa-plus-circle"></i>
                 <span>Add New Cottage</span>
             </a>
@@ -488,7 +859,7 @@ if (isset($_GET['edit'])) {
                     <span class="cottage-type-badge"><?php echo ucfirst($cottage['cottage_type']); ?></span>
                 </div>
                 
-                <div class="cottage-price">₱<?php echo number_format($cottage['price'], 2); ?>/day</div>
+                <div class="cottage-price">₱<?php echo number_format($cottage['price'], 2); ?> <small>/day</small></div>
                 
                 <div class="cottage-detail">
                     <i class="fas fa-users"></i> Capacity: <?php echo $cottage['capacity']; ?> guests
@@ -497,7 +868,7 @@ if (isset($_GET['edit'])) {
                     <i class="fas fa-ruler-combined"></i> Size: <?php echo $cottage['size_sqm']; ?> m²
                 </div>
                 
-                <div style="margin: 10px 0;">
+                <div style="margin: 15px 0;">
                     <?php if ($cottage['is_occupied'] > 0): ?>
                         <span class="status-badge status-occupied">
                             <i class="fas fa-user"></i> Currently Occupied
@@ -535,6 +906,13 @@ if (isset($_GET['edit'])) {
                 </div>
             </div>
             <?php endforeach; ?>
+            
+            <?php if (empty($cottages)): ?>
+            <div class="empty-state">
+                <i class="fas fa-home"></i>
+                <p>No cottages found. Add your first cottage!</p>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
     
@@ -688,7 +1066,7 @@ if (isset($_GET['edit'])) {
                 </button>
                 
                 <div style="text-align: center; margin-top: 15px;">
-                    <a href="cottages.php" class="btn btn-outline">Cancel</a>
+                    <a href="cottages.php" class="btn-outline">Cancel</a>
                 </div>
             </form>
         </div>
@@ -719,8 +1097,10 @@ if (isset($_GET['edit'])) {
         
         // Close modal when clicking outside
         window.onclick = function(event) {
-            const modal = document.getElementById('addCottageModal');
-            if (event.target == modal) {
+            const addModal = document.getElementById('addCottageModal');
+            const editModal = document.getElementById('editCottageModal');
+            
+            if (event.target == addModal) {
                 closeAddCottageModal();
             }
         }

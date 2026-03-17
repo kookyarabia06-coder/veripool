@@ -1,0 +1,711 @@
+/* ========================================
+   VERIPOOL RESORT - COASTAL LUXURY THEME
+   Visual redesign only - No functionality changed
+   ======================================== */
+
+/* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
+
+/* ===== CSS RESET & BASE STYLES ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #2C3E50;
+    background-color: #FFFFFF;
+    overflow-x: hidden;
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #1A2B3C;
+}
+
+h1 {
+    font-size: 4.5rem;
+    line-height: 1.1;
+    font-weight: 700;
+}
+
+h2.section-title {
+    font-size: 3rem;
+    margin-bottom: 3rem;
+    position: relative;
+    text-align: center;
+}
+
+h2.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #C9A57C, #E8D1B0);
+    border-radius: 2px;
+}
+
+/* ===== HEADER & NAVIGATION (COMPLETELY RESTYLED) ===== */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    background: transparent;
+}
+
+.header.scrolled {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: color 0.3s ease;
+}
+
+.header.scrolled .logo {
+    color: #1A2B3C;
+    text-shadow: none;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-links li a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color 0.3s ease;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.header.scrolled .nav-links li a {
+    color: #2C3E50;
+    text-shadow: none;
+}
+
+.nav-links li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #C9A57C;
+    transition: width 0.3s ease;
+}
+
+.nav-links li a:hover::after,
+.nav-links li a.active::after {
+    width: 100%;
+}
+
+.nav-links li a.active {
+    font-weight: 600;
+}
+
+/* Dashboard and Login buttons styling */
+.nav-links li a i {
+    margin-right: 5px;
+}
+
+.nav-links li:last-child a,
+.nav-links li:nth-last-child(2) a {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.5rem 1.2rem;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.header.scrolled .nav-links li:last-child a,
+.header.scrolled .nav-links li:nth-last-child(2) a {
+    border-color: #C9A57C;
+}
+
+.nav-links li:last-child a:hover,
+.nav-links li:nth-last-child(2) a:hover {
+    background: #C9A57C;
+    border-color: #C9A57C;
+    color: white !important;
+}
+
+/* ===== HERO SECTION (COMPLETELY TRANSFORMED) ===== */
+.hero {
+    height: 100vh;
+    min-height: 800px;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), 
+                url('/veripool/assets/images/hero-bg.jpg') center/cover no-repeat fixed;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 150px;
+    background: linear-gradient(to top, rgba(255,255,255,1), transparent);
+    z-index: 1;
+}
+
+.hero-content {
+    max-width: 900px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+    animation: fadeInUp 1s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-content h1 {
+    color: white;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto 2.5rem;
+    opacity: 0.9;
+    line-height: 1.8;
+}
+
+/* ===== BUTTONS (Restyled) ===== */
+.btn {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.btn-primary {
+    background: #C9A57C;
+    color: white;
+    box-shadow: 0 10px 20px rgba(201, 165, 124, 0.3);
+}
+
+.btn-primary:hover {
+    background: #B88E62;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(201, 165, 124, 0.4);
+}
+
+.btn-outline {
+    background: transparent;
+    color: #C9A57C;
+    border: 2px solid #C9A57C;
+    padding: 0.8rem 2rem;
+}
+
+.btn-outline:hover {
+    background: #C9A57C;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* ===== AVAILABILITY SECTION (Redesigned) ===== */
+.availability-section {
+    padding: 6rem 0;
+    background: #F9F7F4;
+    position: relative;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.availability-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.availability-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.availability-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #1A2B3C;
+    border-bottom: 2px solid #F0E7DD;
+    padding-bottom: 0.8rem;
+}
+
+.availability-card p {
+    margin: 0.8rem 0;
+    color: #5A6B7A;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.availability-card i {
+    color: #C9A57C;
+    width: 25px;
+}
+
+.availability-form {
+    background: white;
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1.5fr;
+    gap: 1.5rem;
+    align-items: end;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #1A2B3C;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-control {
+    padding: 1rem;
+    border: 2px solid #E8E1D9;
+    border-radius: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: #FFFFFF;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #C9A57C;
+    box-shadow: 0 0 0 3px rgba(201, 165, 124, 0.1);
+}
+
+/* ===== ROOMS SECTION (Redesigned with 4-column layout) ===== */
+.rooms-section,
+.cottages-section {
+    padding: 6rem 0;
+    background: white;
+}
+
+.rooms-grid,
+.cottages-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.room-card,
+.cottage-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid #F0E7DD;
+}
+
+.room-card:hover,
+.cottage-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 40px rgba(0, 0, 0, 0.1);
+}
+
+.room-image,
+.cottage-image {
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+}
+
+.room-image img,
+.cottage-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.room-card:hover .room-image img,
+.cottage-card:hover .cottage-image img {
+    transform: scale(1.1);
+}
+
+.room-badge,
+.cottage-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #C9A57C;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 5px 15px rgba(201, 165, 124, 0.3);
+    z-index: 2;
+}
+
+.room-badge i,
+.cottage-badge i {
+    margin-right: 5px;
+}
+
+.room-content,
+.cottage-content {
+    padding: 1.8rem;
+}
+
+.room-title,
+.cottage-title {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+    color: #1A2B3C;
+}
+
+.room-meta,
+.cottage-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    color: #7E8C9D;
+    font-size: 0.9rem;
+}
+
+.room-meta span,
+.cottage-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.room-meta i,
+.cottage-meta i {
+    color: #C9A57C;
+}
+
+.room-description,
+.cottage-description {
+    color: #5A6B7A;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.room-price,
+.cottage-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #C9A57C;
+    margin-bottom: 1.2rem;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.room-price small,
+.cottage-price small {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #7E8C9D;
+}
+
+/* ===== CONTACT SECTION (Redesigned) ===== */
+.contact-section {
+    padding: 6rem 0;
+    background: #F9F7F4;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+}
+
+.contact-info {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.contact-info h3 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #1A2B3C;
+}
+
+.contact-info-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.8rem;
+}
+
+.contact-info-item i {
+    width: 40px;
+    height: 40px;
+    background: #C9A57C;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.contact-info-item strong {
+    display: block;
+    margin-bottom: 0.3rem;
+    color: #1A2B3C;
+}
+
+/* ===== FOOTER (Redesigned) ===== */
+.footer {
+    background: #1A2B3C;
+    color: #A0B3C5;
+    padding: 4rem 0 2rem;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.footer-col h4 {
+    color: white;
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.8rem;
+}
+
+.footer-col h4::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: #C9A57C;
+}
+
+.footer-col p {
+    line-height: 1.8;
+}
+
+.footer-col ul {
+    list-style: none;
+}
+
+.footer-col ul li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-col ul li a {
+    color: #A0B3C5;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-col ul li a:hover {
+    color: #C9A57C;
+}
+
+.footer-col ul li i {
+    width: 25px;
+    color: #C9A57C;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ===== DEBUG PANEL (Just visually enhanced) ===== */
+.debug-panel {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(26, 43, 60, 0.95);
+    color: white;
+    padding: 1rem;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    max-width: 300px;
+    max-height: 400px;
+    overflow: auto;
+    z-index: 9999;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    backdrop-filter: blur(5px);
+    border: 1px solid #C9A57C;
+}
+
+.debug-panel.show {
+    transform: translateX(0);
+}
+
+.debug-panel h4 {
+    color: #C9A57C;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+/* ===== RESPONSIVE DESIGN (Mobile adjustments) ===== */
+@media (max-width: 1200px) {
+    .rooms-grid,
+    .cottages-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    h1 {
+        font-size: 3rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-grid,
+    .footer-grid,
+    .availability-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .navbar {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .rooms-grid,
+    .cottages-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero {
+        min-height: 600px;
+    }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.room-card,
+.cottage-card,
+.availability-card {
+    animation: fadeIn 0.8s ease;
+}
+
+/* Scroll animations */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}

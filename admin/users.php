@@ -2,6 +2,7 @@
 /**
  * Veripool Reservation System - Admin Users Page
  * Edit, view, and delete users (No add functionality)
+ * Coastal Harmony Theme - Gray, Blue, Green
  */
 
 // Enable error reporting
@@ -188,51 +189,270 @@ if (isset($_GET['edit'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users Management - Admin Dashboard</title>
+    <title>Users Management - Veripool Admin</title>
     <!-- POP UP ICON -->
     <link rel="apple-touch-icon" sizes="180x180" href="/veripool/assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/veripool/assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/veripool/assets/favicon/favicon-16x16.png">
     <link rel="manifest" href="/veripool/assets/favicon/site.webmanifest">
     
-      <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/admin.css">
-    <link rel="stylesheet" href="/assets/css/sidebar.css">
-
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    
     <style>
-        .user-stats {
+        /* ===== COASTAL HARMONY THEME - USERS PAGE ===== */
+        :root {
+            --gray-100: #F7FAFC;
+            --gray-200: #EDF2F7;
+            --gray-300: #E2E8F0;
+            --gray-400: #CBD5E0;
+            --gray-500: #A0AEC0;
+            --gray-600: #718096;
+            --gray-700: #4A5568;
+            --gray-800: #2D3748;
+            --gray-900: #1A202C;
+            
+            --blue-500: #2B6F8B;
+            --blue-600: #1E5770;
+            --blue-700: #143F52;
+            
+            --green-500: #2F855A;
+            --green-600: #276749;
+            --green-700: #1E4B38;
+            
+            --white: #FFFFFF;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.08);
+            
+            /* Consistent Button Colors */
+            --btn-edit: #2B6F8B;
+            --btn-edit-hover: #1E5770;
+            --btn-delete: #C53030;
+            --btn-delete-hover: #9B2C2C;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            overflow-x: hidden;
+        }
+        
+        /* Main Content Layout */
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--gray-100) 0%, var(--white) 100%);
+            position: relative;
+        }
+        
+        /* Decorative background elements */
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(43, 111, 139, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .main-content::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(47, 133, 90, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px 25px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .top-bar h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .top-bar h1 i {
+            color: var(--blue-500);
+            background: var(--gray-100);
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .date-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            background: var(--gray-100);
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .date-info i {
+            color: var(--blue-500);
+            margin-right: 5px;
+        }
+        
+        /* Alert Messages */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid;
+            position: relative;
+            z-index: 2;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .alert i {
+            font-size: 1.2rem;
+        }
+        
+        .alert-success {
+            border-left-color: var(--green-500);
+            color: var(--green-700);
+        }
+        
+        .alert-error {
+            border-left-color: var(--btn-delete);
+            color: var(--btn-delete);
+            background: #FFF5F5;
+            border-color: #FED7D7;
+        }
+        
+        /* Info Messages */
+        .info-message {
+            background: var(--blue-500);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .info-message i {
+            font-size: 1.2rem;
+        }
+        
+        .warning-message {
+            background: #FEF3C7;
+            color: #92400E;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid #FDE68A;
+            border-left: 4px solid #ED8936;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
         }
         
-        .user-stat-card {
-            background: white;
+        .stat-card {
+            background: var(--white);
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border-left: 4px solid #1679AB;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            border-top: 4px solid var(--blue-500);
+            transition: all 0.3s ease;
         }
         
-        .user-stat-card .number {
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .stat-card .number {
             font-size: 2rem;
-            font-weight: bold;
-            color: #102C57;
+            font-weight: 700;
+            color: var(--gray-900);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.2;
         }
         
-        .user-stat-card .label {
-            color: #666;
-            font-size: 0.9rem;
+        .stat-card .label {
+            color: var(--gray-600);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
+        /* Filter Section */
         .filter-section {
-            background: white;
+            background: var(--white);
+            border-radius: 16px;
             padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .filter-section form {
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
@@ -246,18 +466,253 @@ if (isset($_GET['edit'])) {
         
         .filter-group label {
             display: block;
-            margin-bottom: 5px;
-            color: #102C57;
-            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .filter-select {
             width: 100%;
-            padding: 8px;
-            border: 2px solid #e0e0e0;
-            border-radius: 5px;
+            padding: 8px 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
         }
         
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(43, 111, 139, 0.1);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .btn-primary {
+            background: var(--blue-500);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--blue-600);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--gray-700);
+            border: 2px solid var(--gray-300);
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--blue-500);
+            color: var(--blue-500);
+        }
+        
+        /* Card */
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            margin-bottom: 30px;
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .card-header {
+            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--white), var(--gray-100));
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--gray-900);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card-header h3 i {
+            color: var(--blue-500);
+        }
+        
+        .card-header .badge {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        
+        table th {
+            text-align: left;
+            padding: 12px 8px;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--gray-200);
+            white-space: nowrap;
+        }
+        
+        table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid var(--gray-200);
+            vertical-align: middle;
+            color: var(--gray-700);
+        }
+        
+        table tr:hover td {
+            background: var(--gray-100);
+        }
+        
+        /* Role Badges */
+        .role-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .role-super_admin { 
+            background: #1A202C; 
+            color: #FBBF24; 
+        }
+        .role-admin { 
+            background: var(--blue-500); 
+            color: white; 
+        }
+        .role-staff { 
+            background: #718096; 
+            color: white; 
+        }
+        .role-guest { 
+            background: var(--green-500); 
+            color: white; 
+        }
+        
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-active { 
+            background: #DEF7EC; 
+            color: var(--green-700); 
+        }
+        .status-inactive { 
+            background: #FEE2E2; 
+            color: var(--btn-delete); 
+        }
+        
+        /* Action Buttons - CONSISTENT WITH OTHER PAGES */
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .btn-icon {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            font-weight: 500;
+        }
+        
+        .btn-icon:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-edit { 
+            background: var(--btn-edit); 
+            color: white; 
+        }
+        .btn-edit:hover {
+            background: var(--btn-edit-hover);
+        }
+        
+        .btn-delete { 
+            background: var(--btn-delete); 
+            color: white; 
+        }
+        .btn-delete:hover {
+            background: var(--btn-delete-hover);
+        }
+        
+        .btn-delete:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .no-add-badge {
+            background: var(--gray-500);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            margin-left: 10px;
+        }
+        
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -265,10 +720,11 @@ if (isset($_GET['edit'])) {
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(3px);
         }
         
         .modal.active {
@@ -276,13 +732,15 @@ if (isset($_GET['edit'])) {
         }
         
         .modal-content {
-            background: white;
+            background: var(--white);
             padding: 30px;
-            border-radius: 15px;
-            max-width: 500px;
+            border-radius: 20px;
+            max-width: 600px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
         }
         
         .modal-header {
@@ -290,12 +748,22 @@ if (isset($_GET['edit'])) {
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #FFCBCB;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gray-200);
         }
         
         .modal-header h3 {
-            color: #102C57;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--gray-900);
+            font-size: 1.2rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modal-header h3 i {
+            color: var(--blue-500);
         }
         
         .modal-close {
@@ -303,11 +771,13 @@ if (isset($_GET['edit'])) {
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: #666;
+            color: var(--gray-500);
+            transition: color 0.3s ease;
+            text-decoration: none;
         }
         
         .modal-close:hover {
-            color: #dc3545;
+            color: var(--btn-delete);
         }
         
         .form-row {
@@ -318,133 +788,118 @@ if (isset($_GET['edit'])) {
         }
         
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 5px;
-            color: #102C57;
-            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .form-control {
             width: 100%;
-            padding: 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 5px;
+            padding: 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
         }
         
         .form-control:focus {
-            border-color: #1679AB;
             outline: none;
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(43, 111, 139, 0.1);
+        }
+        
+        .form-control[readonly] {
+            background: var(--gray-100);
+            color: var(--gray-600);
         }
         
         .btn-submit {
-            background: #1679AB;
+            background: var(--blue-500);
             color: white;
-            padding: 12px 25px;
+            padding: 14px 25px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
             width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         
         .btn-submit:hover {
-            background: #102C57;
+            background: var(--blue-600);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
         
-        .role-badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
+        h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--gray-900);
+            margin: 20px 0 10px;
+            font-size: 1rem;
         }
         
-        .role-super_admin { background: #102C57; color: #FFCBCB; }
-        .role-admin { background: #1679AB; color: white; }
-        .role-staff { background: #FFB1B1; color: #102C57; }
-        .role-guest { background: #FFCBCB; color: #102C57; }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray-500);
         }
         
-        .status-active { background: #d4edda; color: #155724; }
-        .status-inactive { background: #f8d7da; color: #721c24; }
-        
-        .action-buttons {
-            display: flex;
-            gap: 5px;
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--gray-300);
+            margin-bottom: 15px;
         }
         
-        .btn-icon {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 0.8rem;
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
         
-        .btn-edit { background: #17a2b8; color: white; }
-        .btn-delete { background: #dc3545; color: white; }
-        
-        .no-add-badge {
-            background: #6c757d;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-left: 10px;
-        }
-        
-        .info-message {
-            background: #cce5ff;
-            color: #004085;
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .warning-message {
-            background: #fff3cd;
-            color: #856404;
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        @media (max-width: 992px) {
+            .filter-section form {
+                flex-direction: column;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
         }
         
         @media (max-width: 768px) {
-            .user-stats {
-                grid-template-columns: 1fr 1fr;
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
             
             .form-row {
                 grid-template-columns: 1fr;
             }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-      <?php include '../includes/sidebar.php'; ?>
-    <!-- Mobile Menu Toggle -->
-    <button class="menu-toggle" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i> Menu
-    </button>
-    
-   
+    <!-- Include Sidebar -->
+    <?php include BASE_PATH . '/includes/sidebar.php'; ?>
     
     <!-- Main Content -->
     <div class="main-content">
@@ -453,10 +908,9 @@ if (isset($_GET['edit'])) {
             <h1>
                 <i class="fas fa-users"></i>
                 Users Management
-              
             </h1>
-            <div class="date">
-                <i class="far fa-calendar-alt"></i> <?php echo date('l, F d, Y'); ?>
+            <div class="date-info">
+                <span><i class="far fa-calendar-alt"></i> <?php echo date('l, F d, Y'); ?></span>
             </div>
         </div>
         
@@ -467,25 +921,27 @@ if (isset($_GET['edit'])) {
             </div>
         <?php endif; ?>
         
-        
-        
-       
+        <!-- Info Message -->
+        <div class="info-message">
+            <i class="fas fa-info-circle"></i>
+            <span>You can edit existing users and delete them. New users can only be created through registration or by walk-in reservations.</span>
+        </div>
         
         <!-- User Statistics -->
-        <div class="user-stats">
-            <div class="user-stat-card">
+        <div class="stats-grid">
+            <div class="stat-card">
                 <div class="number"><?php echo $total_users; ?></div>
                 <div class="label">Total Users</div>
             </div>
-            <div class="user-stat-card">
+            <div class="stat-card" style="border-top-color: var(--green-500);">
                 <div class="number"><?php echo $total_guests; ?></div>
                 <div class="label">Guests</div>
             </div>
-            <div class="user-stat-card">
+            <div class="stat-card" style="border-top-color: #718096;">
                 <div class="number"><?php echo $total_staff; ?></div>
                 <div class="label">Staff</div>
             </div>
-            <div class="user-stat-card">
+            <div class="stat-card" style="border-top-color: var(--blue-500);">
                 <div class="number"><?php echo $total_admins; ?></div>
                 <div class="label">Admins</div>
             </div>
@@ -493,7 +949,7 @@ if (isset($_GET['edit'])) {
         
         <!-- Filter Section -->
         <div class="filter-section">
-            <form method="GET" style="display: flex; gap: 15px; flex-wrap: wrap; width: 100%; align-items: flex-end;">
+            <form method="GET">
                 <div class="filter-group">
                     <label>Role</label>
                     <select name="role" class="filter-select">
@@ -529,7 +985,10 @@ if (isset($_GET['edit'])) {
             </div>
             <div class="card-body">
                 <?php if (empty($users)): ?>
-                    <p style="text-align: center; color: #666; padding: 40px;">No users found.</p>
+                    <div class="empty-state">
+                        <i class="fas fa-users"></i>
+                        <p>No users found.</p>
+                    </div>
                 <?php else: ?>
                     <div class="table-responsive">
                         <table>
@@ -550,11 +1009,11 @@ if (isset($_GET['edit'])) {
                             <tbody>
                                 <?php foreach ($users as $user): ?>
                                 <tr>
-                                    <td>#<?php echo $user['id']; ?></td>
-                                    <td><strong><?php echo htmlspecialchars($user['username']); ?></strong></td>
+                                    <td><strong>#<?php echo $user['id']; ?></strong></td>
+                                    <td><?php echo htmlspecialchars($user['username']); ?></td>
                                     <td><?php echo htmlspecialchars($user['full_name']); ?></td>
                                     <td><?php echo htmlspecialchars($user['email']); ?></td>
-                                    <td><?php echo $user['phone'] ?: 'N/A'; ?></td>
+                                    <td><?php echo $user['phone'] ?: '—'; ?></td>
                                     <td>
                                         <span class="role-badge role-<?php echo $user['role']; ?>">
                                             <?php echo ucfirst(str_replace('_', ' ', $user['role'])); ?>
@@ -572,14 +1031,14 @@ if (isset($_GET['edit'])) {
                                     <td>
                                         <div class="action-buttons">
                                             <a href="?edit=<?php echo $user['id']; ?>" class="btn-icon btn-edit" title="Edit">
-                                                <i class="fas fa-edit"></i>
+                                                <i class="fas fa-edit"></i> Edit
                                             </a>
                                             <?php if ($user['id'] != $_SESSION['user_id']): ?>
                                             <form method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this user?\n\nThis will also delete all associated audit trails.');">
                                                 <input type="hidden" name="action" value="delete_user">
                                                 <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
                                                 <button type="submit" class="btn-icon btn-delete" title="Delete">
-                                                    <i class="fas fa-trash"></i>
+                                                    <i class="fas fa-trash"></i> Delete
                                                 </button>
                                             </form>
                                             <?php endif; ?>
@@ -660,11 +1119,12 @@ if (isset($_GET['edit'])) {
                     </div>
                 </div>
                 
-                <h4 style="color: #102C57; margin: 20px 0 10px;">Change Password (Optional)</h4>
+                <h4>Change Password <small style="font-weight: normal; color: var(--gray-500);">(Optional)</small></h4>
                 
                 <div class="form-group">
                     <label for="new_password">New Password</label>
                     <input type="password" name="new_password" id="new_password" class="form-control" placeholder="Leave blank to keep current">
+                    <small style="color: var(--gray-500);">Min. 6 characters</small>
                 </div>
                 
                 <button type="submit" class="btn-submit">
@@ -672,7 +1132,7 @@ if (isset($_GET['edit'])) {
                 </button>
                 
                 <div style="text-align: center; margin-top: 15px;">
-                    <a href="users.php" class="btn btn-outline">Cancel</a>
+                    <a href="users.php" class="btn-outline">Cancel</a>
                 </div>
             </form>
         </div>
@@ -692,6 +1152,14 @@ if (isset($_GET['edit'])) {
                 setTimeout(() => alert.style.display = 'none', 500);
             });
         }, 5000);
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('editUserModal');
+            if (event.target == modal) {
+                window.location.href = 'users.php';
+            }
+        }
     </script>
 </body>
 </html>

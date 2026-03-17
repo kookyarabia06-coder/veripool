@@ -136,7 +136,7 @@ if (!function_exists('hasRole')) {
     <link rel="manifest" href="/veripool/assets/favicon/site.webmanifest">
     
     <!-- FIXED: Use root-relative paths for CSS -->
-    <link rel="stylesheet" href="/veripool/assets/css/style.css">
+    <link rel="stylesheet" href="/veripool/assets/css/stylers.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <!-- Alternative: If you want to use BASE_URL, it will now work correctly -->

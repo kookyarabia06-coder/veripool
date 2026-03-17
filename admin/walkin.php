@@ -2,6 +2,7 @@
 /**
  * Veripool Reservation System - Admin Walk-in Page
  * Walk-in reservations management with actions - No OTP for walk-ins
+ * Coastal Harmony Theme - Gray, Blue, Green
  */
 
 // Enable error reporting
@@ -283,106 +284,468 @@ unset($_SESSION['message_type']);
     <link rel="icon" type="image/png" sizes="16x16" href="/veripool/assets/favicon/favicon-16x16.png">
     <link rel="manifest" href="/veripool/assets/favicon/site.webmanifest">
     
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/admin.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/admin/css/walkin.css">
-    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    
     <style>
-        /* Additional styles for walk-in page */
-        .info-box {
-            background: linear-gradient(135deg, #102C57, #1679AB);
-            color: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 25px;
+        /* ===== COASTAL HARMONY THEME - WALK-IN PAGE ===== */
+        :root {
+            --gray-100: #F7FAFC;
+            --gray-200: #EDF2F7;
+            --gray-300: #E2E8F0;
+            --gray-400: #CBD5E0;
+            --gray-500: #A0AEC0;
+            --gray-600: #718096;
+            --gray-700: #4A5568;
+            --gray-800: #2D3748;
+            --gray-900: #1A202C;
+            
+            --blue-500: #2B6F8B;
+            --blue-600: #1E5770;
+            --blue-700: #143F52;
+            
+            --green-500: #2F855A;
+            --green-600: #276749;
+            --green-700: #1E4B38;
+            
+            --white: #FFFFFF;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            overflow-x: hidden;
+        }
+        
+        /* Main Content Layout */
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--gray-100) 0%, var(--white) 100%);
+            position: relative;
+        }
+        
+        /* Decorative background elements */
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(43, 111, 139, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .main-content::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(47, 133, 90, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px 25px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .top-bar h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .top-bar h1 i {
+            color: var(--blue-500);
+            background: var(--gray-100);
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .date-info {
             display: flex;
             align-items: center;
             gap: 15px;
-            box-shadow: 0 5px 15px rgba(22,121,171,0.3);
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            background: var(--gray-100);
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .date-info i {
+            color: var(--blue-500);
+            margin-right: 5px;
+        }
+        
+        /* Info Alert - Walk-ins don't need OTP */
+        .info-box {
+            background: linear-gradient(135deg, var(--blue-500), var(--blue-600));
+            color: white;
+            border-radius: 16px;
+            padding: 20px 25px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            z-index: 2;
+            border: 1px solid var(--gray-200);
         }
         
         .info-box i {
             font-size: 2.5rem;
-            color: #FFCBCB;
+            color: rgba(255, 255, 255, 0.8);
         }
         
         .info-box p {
             margin: 0;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
         
         .info-box p strong {
-            color: #FFB1B1;
+            color: white;
+            font-weight: 600;
         }
         
         .info-box p small {
-            color: #FFCBCB;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
         }
         
+        /* Alert Messages */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid;
+            position: relative;
+            z-index: 2;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .alert i {
+            font-size: 1.2rem;
+        }
+        
+        .alert-success {
+            border-left-color: var(--green-500);
+            color: var(--green-700);
+        }
+        
+        .alert-error {
+            border-left-color: #C53030;
+            color: #C53030;
+            background: #FFF5F5;
+            border-color: #FED7D7;
+        }
+        
+        /* Stats Cards */
         .stats-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(5, 1fr);
             gap: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
         }
         
         .stat-card-sm {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            background: var(--white);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
             text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card-sm:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
         }
         
         .stat-card-sm .stat-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #102C57;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.2;
         }
         
         .stat-card-sm .stat-label {
             font-size: 0.8rem;
-            color: #666;
+            color: var(--gray-600);
             margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
-        .payment-badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 500;
+        /* Filter Section */
+        .filter-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            z-index: 2;
         }
         
-        .payment-badge.paid {
-            background: #d4edda;
-            color: #155724;
+        .filter-section form {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: flex-end;
         }
         
-        .payment-badge.partial {
-            background: #fff3cd;
-            color: #856404;
+        .filter-group {
+            flex: 1;
+            min-width: 150px;
         }
         
-        .payment-badge.unpaid {
-            background: #f8d7da;
-            color: #721c24;
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .filter-group label i {
+            color: var(--blue-500);
+            margin-right: 5px;
+        }
+        
+        .filter-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(43, 111, 139, 0.1);
         }
         
         .filter-select {
             width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
+            padding: 10px 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
             font-size: 0.9rem;
+            background: var(--white);
+            cursor: pointer;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--blue-500);
         }
         
         .btn-group {
             display: flex;
             gap: 10px;
             align-items: flex-end;
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .card-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, var(--white), var(--gray-100));
+        }
+        
+        .card-header h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-header h3 i {
+            color: var(--blue-500);
+        }
+        
+        .card-header .badge {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        /* Table Styles */
+        .table-responsive {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        
+        table th {
+            text-align: left;
+            padding: 15px 12px;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--gray-200);
+        }
+        
+        table td {
+            padding: 15px 12px;
+            border-bottom: 1px solid var(--gray-200);
+            vertical-align: middle;
+            color: var(--gray-700);
+        }
+        
+        table tr:hover td {
+            background: var(--gray-100);
+        }
+        
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-pending { 
+            background: #FEF3C7; 
+            color: #92400E; 
+        }
+        
+        .status-confirmed { 
+            background: #DEF7EC; 
+            color: var(--green-700); 
+        }
+        
+        .status-checked_in { 
+            background: #E1EFFE; 
+            color: var(--blue-700); 
+        }
+        
+        .status-checked_out { 
+            background: var(--gray-200); 
+            color: var(--gray-700); 
+        }
+        
+        .status-cancelled { 
+            background: #FEE2E2; 
+            color: #B91C1C; 
+        }
+        
+        /* Payment Badges */
+        .payment-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .payment-badge.paid {
+            background: #DEF7EC;
+            color: var(--green-700);
+        }
+        
+        .payment-badge.partial {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        
+        .payment-badge.unpaid {
+            background: #FEE2E2;
+            color: #B91C1C;
         }
         
         /* Action Buttons */
@@ -393,40 +756,116 @@ unset($_SESSION['message_type']);
         }
         
         .btn-action {
-            padding: 4px 8px;
+            padding: 6px 10px;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 0.7rem;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
+            font-weight: 500;
         }
         
         .btn-action:hover {
             transform: translateY(-2px);
-            filter: brightness(0.95);
+            box-shadow: var(--shadow-sm);
         }
         
         .btn-edit {
-            background: #17a2b8;
+            background: var(--blue-500);
             color: white;
+        }
+        
+        .btn-edit:hover {
+            background: var(--blue-600);
         }
         
         .btn-checkin {
-            background: #28a745;
+            background: var(--green-500);
             color: white;
+        }
+        
+        .btn-checkin:hover {
+            background: var(--green-600);
         }
         
         .btn-checkout {
-            background: #ffc107;
-            color: #102C57;
+            background: #ED8936;
+            color: white;
+        }
+        
+        .btn-checkout:hover {
+            background: #DD6B20;
         }
         
         .btn-delete {
-            background: #dc3545;
+            background: #C53030;
             color: white;
+        }
+        
+        .btn-delete:hover {
+            background: #9B2C2C;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--gray-500);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--gray-300);
+            margin-bottom: 15px;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.2rem;
+            color: var(--gray-700);
+            margin-bottom: 10px;
+        }
+        
+        .empty-state p {
+            margin-bottom: 20px;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .btn-primary {
+            background: var(--blue-500);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--blue-600);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--gray-700);
+            border: 2px solid var(--gray-300);
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--blue-500);
+            color: var(--blue-500);
         }
         
         /* Modal Styles */
@@ -437,10 +876,11 @@ unset($_SESSION['message_type']);
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(3px);
         }
         
         .modal.active {
@@ -448,27 +888,37 @@ unset($_SESSION['message_type']);
         }
         
         .modal-content {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 20px;
             max-width: 500px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
         }
         
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #FFCBCB;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gray-200);
         }
         
         .modal-header h3 {
-            color: #102C57;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--gray-900);
             margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modal-header h3 i {
+            color: var(--blue-500);
         }
         
         .modal-close {
@@ -476,73 +926,119 @@ unset($_SESSION['message_type']);
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: #666;
+            color: var(--gray-500);
+            transition: color 0.3s ease;
         }
         
         .modal-close:hover {
-            color: #dc3545;
+            color: #C53030;
         }
         
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 5px;
-            color: #102C57;
-            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .form-control {
             width: 100%;
-            padding: 8px 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 5px;
+            padding: 10px 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
             font-size: 0.9rem;
         }
         
         .form-control:focus {
-            border-color: #1679AB;
             outline: none;
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(43, 111, 139, 0.1);
+        }
+        
+        .form-control[readonly] {
+            background: var(--gray-100);
+            color: var(--gray-600);
         }
         
         .modal-actions {
             display: flex;
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 25px;
         }
         
         .btn-save {
-            background: #28a745;
+            background: var(--green-500);
             color: white;
-            padding: 10px 15px;
+            padding: 12px 15px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             flex: 2;
-            font-weight: bold;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-save:hover {
+            background: var(--green-600);
+            transform: translateY(-2px);
         }
         
         .btn-cancel {
-            background: #6c757d;
-            color: white;
-            padding: 10px 15px;
+            background: var(--gray-300);
+            color: var(--gray-700);
+            padding: 12px 15px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             flex: 1;
-            font-weight: bold;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
         
-        @media (max-width: 768px) {
-            .btn-group {
+        .btn-cancel:hover {
+            background: var(--gray-400);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .stats-cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .stats-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .filter-section form {
                 flex-direction: column;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .btn-group {
                 width: 100%;
             }
             
             .btn-group .btn {
-                width: 100%;
+                flex: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-cards {
+                grid-template-columns: 1fr;
             }
             
             .action-buttons {
@@ -560,12 +1056,12 @@ unset($_SESSION['message_type']);
         <!-- Top Bar -->
         <div class="top-bar">
             <h1>
-                <i class="fas fa-user-plus" style="color: #1679AB;"></i>
+                <i class="fas fa-user-plus"></i>
                 Walk-in Management
             </h1>
-            <div class="date">
-                <i class="far fa-calendar-alt"></i> <?php echo date('l, F d, Y'); ?>
-                <span style="margin-left: 15px;"><i class="far fa-clock"></i> <?php echo date('h:i A'); ?></span>
+            <div class="date-info">
+                <span><i class="far fa-calendar-alt"></i> <?php echo date('l, F d, Y'); ?></span>
+                <span><i class="far fa-clock"></i> <?php echo date('h:i A'); ?></span>
             </div>
         </div>
         
@@ -612,7 +1108,7 @@ unset($_SESSION['message_type']);
         
         <!-- Filter Section -->
         <div class="filter-section">
-            <form method="GET" style="display: flex; gap: 15px; flex-wrap: wrap; width: 100%;">
+            <form method="GET">
                 <div class="filter-group">
                     <label><i class="fas fa-calendar-alt"></i> Date From</label>
                     <input type="date" name="date_from" class="filter-input" value="<?php echo $date_from; ?>">
@@ -681,16 +1177,16 @@ unset($_SESSION['message_type']);
                                 <?php foreach ($today_walkins as $walkin): ?>
                                 <tr>
                                     <td>
-                                        <i class="far fa-clock" style="color: #1679AB;"></i>
+                                        <i class="far fa-clock" style="color: var(--blue-500);"></i>
                                         <?php echo date('h:i A', strtotime($walkin['created_at'])); ?>
                                     </td>
                                     <td><strong><?php echo $walkin['reservation_number']; ?></strong></td>
                                     <td><?php echo htmlspecialchars($walkin['guest_name']); ?></td>
                                     <td>
                                         <?php if ($walkin['room_number']): ?>
-                                            <i class="fas fa-bed"></i> Room <?php echo $walkin['room_number']; ?>
+                                            <i class="fas fa-bed" style="color: var(--blue-500);"></i> Room <?php echo $walkin['room_number']; ?>
                                         <?php else: ?>
-                                            <span style="color: #999;">No Room</span>
+                                            <span style="color: var(--gray-400);">No Room</span>
                                         <?php endif; ?>
                                     </td>
                                     <td><?php echo date('M d', strtotime($walkin['check_in_date'])); ?></td>
@@ -754,7 +1250,7 @@ unset($_SESSION['message_type']);
                     <i class="fas fa-list"></i> 
                     Walk-in Reservations
                     <?php if ($status_filter != 'all' || isset($_GET['date_from'])): ?>
-                        <span style="font-size: 0.9rem; color: #FFCBCB; margin-left: 10px;">
+                        <span style="font-size: 0.9rem; color: var(--gray-500); margin-left: 10px;">
                             (Filtered)
                         </span>
                     <?php endif; ?>
@@ -817,21 +1313,21 @@ unset($_SESSION['message_type']);
                                 ?>
                                 <tr>
                                     <td>
-                                        <i class="far fa-calendar-alt" style="color: #1679AB;"></i>
+                                        <i class="far fa-calendar-alt" style="color: var(--blue-500);"></i>
                                         <?php echo date('M d, Y', strtotime($walkin['created_at'])); ?>
                                     </td>
                                     <td><strong><?php echo $walkin['reservation_number']; ?></strong></td>
                                     <td><?php echo htmlspecialchars($walkin['guest_name']); ?></td>
                                     <td>
-                                        <i class="fas fa-phone"></i> <?php echo $walkin['phone']; ?><br>
-                                        <small><i class="fas fa-envelope"></i> <?php echo $walkin['email']; ?></small>
+                                        <i class="fas fa-phone" style="color: var(--blue-500);"></i> <?php echo $walkin['phone']; ?><br>
+                                        <small><i class="fas fa-envelope" style="color: var(--gray-500);"></i> <?php echo $walkin['email']; ?></small>
                                     </td>
                                     <td>
                                         <?php if ($walkin['room_number']): ?>
-                                            <i class="fas fa-bed"></i> Room <?php echo $walkin['room_number']; ?><br>
-                                            <small><?php echo $walkin['room_type']; ?></small>
+                                            <i class="fas fa-bed" style="color: var(--blue-500);"></i> Room <?php echo $walkin['room_number']; ?><br>
+                                            <small style="color: var(--gray-600);"><?php echo $walkin['room_type']; ?></small>
                                         <?php else: ?>
-                                            <span style="color: #999;">No Room</span>
+                                            <span style="color: var(--gray-400);">No Room</span>
                                         <?php endif; ?>
                                     </td>
                                     <td>
@@ -844,7 +1340,7 @@ unset($_SESSION['message_type']);
                                             <?php echo $payment_text; ?>
                                             <?php if ($payment_status == 'partial'): ?>
                                                 <br><small>Paid: ₱<?php echo number_format($total_paid, 2); ?></small>
-                                                <br><small style="color: #dc3545;">Due: ₱<?php echo number_format($balance, 2); ?></small>
+                                                <br><small style="color: #C53030;">Due: ₱<?php echo number_format($balance, 2); ?></small>
                                             <?php endif; ?>
                                         </span>
                                     </td>
@@ -900,8 +1396,8 @@ unset($_SESSION['message_type']);
                 <?php endif; ?>
             </div>
         </div>
-        
-       
+    </div>
+    
     <!-- Edit Modal -->
     <div class="modal" id="editModal">
         <div class="modal-content">
